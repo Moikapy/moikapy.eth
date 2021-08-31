@@ -1,0 +1,23 @@
+version: '3.7'
+services:
+  ganache:
+    image: moikapy/moiganache
+    command: 'ganache-cli -h 0.0.0.0 -s 0xPI --acctKeys ./wallets.json -e 9001 -q -n'
+    restart: always
+    volumes:
+      - .:/usr/app
+    environment:
+      MMS: $MMS
+    ports:
+      - '8545:8545'
+
+  web:
+    build: .
+    restart: always
+    command: bash -c "yarn  && yarn dev"
+    volumes:
+      - .:/usr/app
+      - /usr/app/node_modules
+    working_dir: /usr/app
+    ports:
+      - '3007:3000'

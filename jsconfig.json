@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./src/",
+    "paths": {
+      "@/components/*": ["components/*","components/index.js","components/common/index.js"],
+      "@/actions": ["actions/index.js"],
+      "@/dao":["dao/index.js"]
+    }
+  }
+}
