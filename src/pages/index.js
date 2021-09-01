@@ -66,7 +66,7 @@ function _index({ address, chainId }) {
             <div key={key} className={'nft-card card p-3 d-flex flex-column'}>
               {name}
               {description}
-              <img src={image.replace('ipfs://', 'https:ipfs.io/ipfs/')}></img>
+              <img src={image.replace('ipfs://', 'https://ipfs.io/ipfs/')}></img>
             </div>
           ))
         ) : (
