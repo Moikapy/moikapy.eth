@@ -244,7 +244,7 @@ export default class oxsis {
     return await contractSign
       .getTotalItemsMinted()
       .then((res) => {
-        console.log(res)
+        console.log(res);
         return parseInt(Number(res._hex), 10);
       })
       .catch((err) => {
@@ -272,9 +272,9 @@ export default class oxsis {
       .tokensOfOwner(addr)
       .then(async (res) => {
         return await res.map(async ({ _hex }) => {
-          const uri =await contractSign.tokenURI(parseInt(Number(_hex), 10));
-          console.log(_hex,uri);
-          return uri
+          const uri = await contractSign.tokenURI(parseInt(Number(_hex), 10));
+          console.log(_hex, uri);
+          return uri;
         });
       })
       .catch((err) => {

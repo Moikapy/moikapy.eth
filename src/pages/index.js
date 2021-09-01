@@ -14,13 +14,13 @@ function _index({ address, chainId }) {
       'uri'
     );
     const wallet = process.env.WALLET_ADDRESS;
-    if (address !== undefined && address.length > 0&& chainId===137) {
+    if (address !== undefined && address.length > 0 && chainId === 137) {
       let NFTs = await oxsis.getNFTs(wallet);
       let array = [];
       for await (const nft of NFTs) {
         fetch(await nft)
           .then(async (res) => await res.json())
-          .then(async(out) => await array.push(out))
+          .then(async (out) => await array.push(out))
           .catch((err) => {
             throw err;
           });
@@ -55,8 +55,9 @@ function _index({ address, chainId }) {
       </style>
       <a href="https://opensea.io/collection/moia-studios">Opensea</a>
       <p>NFT in Collection: {state.collectionCount}</p>
-      <div className={`h-100 d-flex flex-row flex-wrap mx-auto justify-content-center align-items-center`}>
-        {address !== undefined && address.length == 0 || chainId!==137? (
+      <div
+        className={`h-100 d-flex flex-row flex-wrap mx-auto justify-content-center align-items-center`}>
+        {(address !== undefined && address.length == 0) || chainId !== 137 ? (
           <p className={'text-capitalize'}>
             please connect to the polygon network to view collection
           </p>
