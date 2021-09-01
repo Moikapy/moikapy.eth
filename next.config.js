@@ -34,6 +34,7 @@ const nextConfig = {
     API_URL: process.env.API_URL,
     PRIVATE_KEY: process.env.PRIVATE_KEY,
     CONTRACT_ADDRESS: process.env.CONTRACT_ADDRESS,
+    POLYGON_KEY: process.env.POLYGON_KEY,
   },
 };
 module.exports = withPWA(nextConfig);

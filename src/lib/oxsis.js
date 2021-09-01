@@ -5,18 +5,25 @@ import moifetch from 'moifetch';
 const apiKey = process.env.LAZY_NFT_KEY;
 const nft_storage = new NFTStorage({ token: apiKey });
 
-let web3;
-(async () =>
-  (await detectEthereumProvider())
-    ? (web3 = new ethers.providers.Web3Provider(window.ethereum))
-    : (web3 = new ethers.providers.JsonRpcProvider(process.env.API_URL)))();
+// let web3;
+// (async () =>
+//   await detectEthereumProvider())
+//     ? web3 = new ethers.providers.Web3Provider(window.ethereum)
+//     : web3 = new ethers.providers.JsonRpcProvider(
+//         'https://polygon-mainnet.infura.io/v3/' + process.env.POLYGON_KEY)();
 
-// nonce starts counting from 0
-console.log('web3', web3);
+// // nonce starts counting from 0
+// console.log('web3', web3);
 
 export default class oxsis {
-  constructor(provider) {
-    this.web3 = new ethers.providers.JsonRpcProvider(provider);
+  constructor(provider, setting = 'metamaks') {
+    this.web3 =
+      setting == 'metamask'
+        ? new ethers.providers.Web3Provider(provider)
+        : new ethers.providers.JsonRpcProvider(provider);
+
+    this.getNFTs = oxsis.getNFTs.bind(this);
+    this.getNFTCount = oxsis.getNFTCount.bind(this);
   }
 
   // Foramt
@@ -217,6 +224,63 @@ export default class oxsis {
     await this.sendTransaction(tx);
   };
 
+  static getNFTCount = async () => {
+    // A Web3Provider wraps a standard Web3 provider, which is
+    // what Metamask injects as window.ethereum into each page
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+
+    // The Metamask plugin also allows signing transactions to
+    // send ether and pay to change state within the blockchain.
+    // For this, you need the account signer...
+    const signer = provider.getSigner();
+    console.log('signer', signer);
+    var abi = require('../../artifacts/contracts/ERC721.sol/ERC721_V1.json');
+    var contract = new ethers.Contract(
+      process.env.CONTRACT_ADDRESS,
+      abi.abi,
+      provider
+    );
+    var contractSign = await contract.connect(signer);
+    return await contractSign
+      .getTotalItemsMinted()
+      .then((res) => {
+        console.log(res)
+        return parseInt(Number(res._hex), 10);
+      })
+      .catch((err) => {
+        throw err;
+      });
+  };
+  static getNFTs = async (addr) => {
+    // A Web3Provider wraps a standard Web3 provider, which is
+    // what Metamask injects as window.ethereum into each page
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+
+    // The Metamask plugin also allows signing transactions to
+    // send ether and pay to change state within the blockchain.
+    // For this, you need the account signer...
+
+    const signer = provider.getSigner();
+    var abi = require('../../artifacts/contracts/ERC721.sol/ERC721_V1.json');
+    var contract = new ethers.Contract(
+      process.env.CONTRACT_ADDRESS,
+      abi.abi,
+      provider
+    );
+    var contractSign = await contract.connect(signer);
+    return await contractSign
+      .tokensOfOwner(addr)
+      .then(async (res) => {
+        return await res.map(async ({ _hex }) => {
+          const uri =await contractSign.tokenURI(parseInt(Number(_hex), 10));
+          console.log(_hex,uri);
+          return uri
+        });
+      })
+      .catch((err) => {
+        throw err;
+      });
+  };
   static getGasFees = async (callback) => {
     try {
       let wsObj;

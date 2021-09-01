@@ -60,7 +60,7 @@ export const login = (props) => async (dispatch, getState) => {
     let ethereumProvider = await web3.currentProvider;
     await ethereumProvider.request({ method: 'eth_requestAccounts' });
     await dispatch(getAddress());
-    await dispatch(connectID());
+    // await dispatch(connectID());
     await dispatch({ type: 'SET_AUTH_STATUS', payload: true });
   } catch (error) {
     await console.log('Login(): ', error);
@@ -133,7 +133,7 @@ export const getBalance = (addr) => async (dispatch) => {
 //
 const getNetwork = () => async (dispatch) => {
   await web3.eth.net
-    .getNetworkType()
+    .getId()
     .then((res) => dispatch(setChainId(res)))
     .catch((err) => {
       console.log('getNetwork', err);

@@ -22,10 +22,10 @@ export default function NFTInput({ id, onChange, label, accept }) {
               : '';
           data.length > 0
             ? onChange({
-              cid: data,
-              status: await oxsis.getCIDStatus(data),
-              fileType: e.target.files[0].type,
-            })
+                cid: data,
+                status: await oxsis.getCIDStatus(data),
+                fileType: e.target.files[0].type,
+              })
             : onChange({ cid: data });
         }}
       />

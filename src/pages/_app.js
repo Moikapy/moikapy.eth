@@ -49,8 +49,7 @@ function MyApp({ Component, pageProps }) {
           content="LAZYMINT.APP: A Simple Web App that allows users to Lazy Mint their work to Rarible and the Ethereum Blockchain. Built with a NFT Focused Gas Station to Display the Latest Transaction Gas Fees. Using The Rarible Protocol and 3box to build a cross-chain platform"
         />
         <title>
-          LAZYNFT.APP{' '}
-          {router.pathname !== '/' ? router.pathname.toUpperCase() : ''}
+          MOIKAPY {router.pathname !== '/' ? router.pathname.toUpperCase() : ''}
         </title>
       </Head>
 

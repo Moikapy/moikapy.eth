@@ -4,13 +4,7 @@ import Navbar from './navbar';
 import LoginModal from '../loginModal';
 import { startCore, updateOnlineUserCount } from '../../actions/';
 import { useRouter } from 'next/router';
-function Layout({
-  children,
-  layoutContainerStyle = '',
-  startCore,
-  updateOnlineUserCount,
-  online_user_count,
-}) {
+function Layout({ children, layoutContainerStyle = '', startCore }) {
   const router = useRouter();
   const [show, setShow] = useState(false);
   const [showSidebar, setShowSidebar] = useState(false);
@@ -44,7 +38,7 @@ function Layout({
         navbarContainerStyle={'sticky-top border-top border-bottom border-dark'}
         brandText={process.env.BRAND_NAME || 'MOIKAPY.ETH'}
         brandTextStyle={`text-uppercase`}
-        onClick={() => setShow(!show)}
+        onClick={() => setShow(true)}
         onClickCreate={() => router.push('/mint')}
       />
       <div className={`content-wrapper contianer-fluid d-flex flex-column`}>

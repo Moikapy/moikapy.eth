@@ -43,7 +43,14 @@ function Navbar({
         {brandText}
       </span>
       <div className={`d-none d-sm-flex flex-row`}>
-        <WalletButton onPress={() => onClick()} address={address} />
+        {address !== undefined && address.length > 0 && (
+          <Button
+            buttonStyle={`create-button py-0`}
+            onPress={() => onClickCreate()}>
+            Mint
+          </Button>
+        )}
+        <WalletButton onPress={onClick} address={address} />
       </div>
     </div>
   );

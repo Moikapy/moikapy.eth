@@ -6,14 +6,11 @@ import Input from './common/input';
 import { MoiNFTs } from '../lib';
 import { _metadata, _metadataTypes } from 'lib/metadataSchema.ts';
 import { event } from 'utility/analytics';
-import { truncateAddress } from 'lib/moiWeb3';
 import FormInputs from './FormInputs';
 import Modal from './common/modal';
 import Oxsis from 'lib/oxsis';
 import detectEthereumProvider from '@metamask/detect-provider';
 let web3, oxsis;
-
-
 
 const moiNFTs = new MoiNFTs({
   _host: process.env.RAREPRESS + '/' + process.env.RAREPRESS_VERSION,
@@ -21,7 +18,6 @@ const moiNFTs = new MoiNFTs({
 });
 
 function NFTForm({ address }) {
-
   const [state, setState] = useState({
     owners: [
       {
@@ -131,24 +127,24 @@ function NFTForm({ address }) {
 
                 if (typeof e.fileType !== 'undefined') {
                   e.fileType.split('/')[0] === 'audio' ||
-                    e.fileType.split('/')[0] === 'video'
+                  e.fileType.split('/')[0] === 'video'
                     ? setState({
-                      ...state,
-                      animation_url: 'ipfs://' + e.cid,
-                      fileData: '',
-                      type: e.fileType.split('/')[0],
-                      showInput: true,
-                      token: null,
-                    })
+                        ...state,
+                        animation_url: 'ipfs://' + e.cid,
+                        fileData: '',
+                        type: e.fileType.split('/')[0],
+                        showInput: true,
+                        token: null,
+                      })
                     : setState({
-                      ...state,
-                      animation_url: '',
-                      fileData: 'ipfs://' + e.cid,
-                      type: e.fileType.split('/')[0],
-                      disable: false,
-                      token: null,
-                      showInput: false,
-                    });
+                        ...state,
+                        animation_url: '',
+                        fileData: 'ipfs://' + e.cid,
+                        type: e.fileType.split('/')[0],
+                        disable: false,
+                        token: null,
+                        showInput: false,
+                      });
                 } else {
                   setState({
                     ...state,
@@ -194,7 +190,10 @@ function NFTForm({ address }) {
                     <img
                       alt="Lazy NFT App Image"
                       className={'w-100'}
-                      src={'https://ipfs.io/ipfs/' + state.fileData.replace('ipfs://', '')}
+                      src={
+                        'https://ipfs.io/ipfs/' +
+                        state.fileData.replace('ipfs://', '')
+                      }
                     />
                   </div>
                   <hr />
@@ -246,7 +245,6 @@ function NFTForm({ address }) {
                   console.log(_tkn);
                   await Oxsis.mintNFT(address, _tkn);
 
-
                   if (_tkn !== undefined) {
                     event({
                       action: 'mint',
@@ -266,12 +264,8 @@ function NFTForm({ address }) {
                 }}>
                 Mint
               </Button>
-
-
             </div>
           </div>
-
-
         </div>
         {state.isLoading && (
           <div
@@ -285,7 +279,6 @@ function NFTForm({ address }) {
             </div>
           </div>
         )}
-
       </div>
 
       {false && <Modal></Modal>}
