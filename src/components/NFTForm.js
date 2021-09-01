@@ -1,41 +1,24 @@
-import { useRef, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import NFTInput from './NFTInput';
 import Button from './common/button';
 import { connect } from 'react-redux';
-import Input from './common/input';
-import { MoiNFTs } from '../lib';
 import { _metadata, _metadataTypes } from 'lib/metadataSchema.ts';
 import { event } from 'utility/analytics';
 import FormInputs from './FormInputs';
-import Modal from './common/modal';
 import Oxsis from 'lib/oxsis';
 import detectEthereumProvider from '@metamask/detect-provider';
 let web3, oxsis;
 
-const moiNFTs = new MoiNFTs({
-  _host: process.env.RAREPRESS + '/' + process.env.RAREPRESS_VERSION,
-  _storeAccount: process.env.WALLET_ADDRESS,
-});
-
 function NFTForm({ address }) {
   const [state, setState] = useState({
-    owners: [
-      {
-        address: address,
-        value: 100,
-      },
-    ],
     ..._metadata,
-    supply: 1,
-    price: 0,
     type: '',
-    royalties: 0,
     attributes: [
       {
-        trait_type: 'Minted With:',
-        value: 'THE LAZY NFT APP - https://lazynft.app',
+        trait_type: 'Developer Site:',
+        value: 'https://moikapy.lazynft.app',
       },
-      { trait_type: 'Lazy Mint Date:', value: new Date().toUTCString() },
+      { trait_type: 'Mint Date:', value: new Date().toUTCString() },
     ],
     token: null,
     disable: true,
@@ -123,8 +106,6 @@ function NFTForm({ address }) {
               id={'nft-input'}
               label={'File:'}
               onChange={async (e) => {
-                console.log(e, e.cid.replace('ipfs://', ''));
-
                 if (typeof e.fileType !== 'undefined') {
                   e.fileType.split('/')[0] === 'audio' ||
                   e.fileType.split('/')[0] === 'video'
@@ -134,7 +115,6 @@ function NFTForm({ address }) {
                         fileData: '',
                         type: e.fileType.split('/')[0],
                         showInput: true,
-                        token: null,
                       })
                     : setState({
                         ...state,
@@ -142,7 +122,6 @@ function NFTForm({ address }) {
                         fileData: 'ipfs://' + e.cid,
                         type: e.fileType.split('/')[0],
                         disable: false,
-                        token: null,
                         showInput: false,
                       });
                 } else {
@@ -204,7 +183,8 @@ function NFTForm({ address }) {
                   <video
                     controls
                     className={''}
-                    src={process.env.RAREPRESS + state.animation_url}
+                    src={'https://ipfs.io/ipfs/' +
+                      state.fileData.replace('ipfs://', '')}
                   />
                 </div>
               )}
@@ -213,7 +193,8 @@ function NFTForm({ address }) {
                   <audio
                     controls
                     className={'w-100'}
-                    src={process.env.RAREPRESS + state.animation_url}
+                    src={'https://ipfs.io/ipfs/' +
+                      state.fileData.replace('ipfs://', '')}
                   />
                 </div>
               )}
@@ -242,7 +223,6 @@ function NFTForm({ address }) {
                     properties: state.properties,
                   });
                   const _tkn = await Oxsis.storeFileAsBlob(json);
-                  console.log(_tkn);
                   await Oxsis.mintNFT(address, _tkn);
 
                   if (_tkn !== undefined) {
@@ -280,8 +260,6 @@ function NFTForm({ address }) {
           </div>
         )}
       </div>
-
-      {false && <Modal></Modal>}
     </div>
   );
 }

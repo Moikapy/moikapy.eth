@@ -49,7 +49,12 @@ function _index({ address, chainId }) {
       <style jsx>
         {`
           .nft-card {
-            max-width: 300px;
+            max-width: 400px;
+            max-height: 450px;
+            height: 100%;
+            width: 100%;
+            min-height: 150px;
+            min-width: 200px;
           }
         `}
       </style>
@@ -64,9 +69,9 @@ function _index({ address, chainId }) {
         ) : state.NFTs !== undefined && state.NFTs.length > 0 ? (
           state.NFTs.map(({ name, description, image }, key) => (
             <div key={key} className={'nft-card card p-3 d-flex flex-column'}>
+              {/* {description} */}
+              <img title={name + '; ' +description} className={`h-100 w-100`} src={image.replace('ipfs://', 'https://ipfs.io/ipfs/')}></img>
               {name}
-              {description}
-              <img src={image.replace('ipfs://', 'https://ipfs.io/ipfs/')}></img>
             </div>
           ))
         ) : (

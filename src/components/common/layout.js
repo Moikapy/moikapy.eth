@@ -58,6 +58,6 @@ function Layout({ children, layoutContainerStyle = '', startCore }) {
 const mapStateToProps = (state) => ({
   online_user_count: state.session.online_user_count,
 });
-export default connect(mapStateToProps, { startCore, updateOnlineUserCount })(
+export default connect(null, { startCore })(
   Layout
 );

@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { truncateAddress } from '../lib/moiWeb3';
-import WalletButtonItem from './walletbuttonitem';
 function WalletButton({ address = '', onPress = () => {} }) {
   const [show, setShow] = useState(false);
   return (
