@@ -70,7 +70,10 @@ function _index({ address, chainId }) {
           state.NFTs.map(({ name, description, image }, key) => (
             <div key={key} className={'nft-card card p-3 d-flex flex-column'}>
               {/* {description} */}
-              <img title={name + '; ' +description} className={`h-100 w-100`} src={image.replace('ipfs://', 'https://ipfs.io/ipfs/')}></img>
+              <img
+                title={name + '; ' + description}
+                className={`h-100 w-100`}
+                src={image.replace('ipfs://', 'https://ipfs.io/ipfs/')}></img>
               {name}
             </div>
           ))

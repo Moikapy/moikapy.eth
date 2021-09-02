@@ -183,8 +183,10 @@ function NFTForm({ address }) {
                   <video
                     controls
                     className={''}
-                    src={'https://ipfs.io/ipfs/' +
-                      state.fileData.replace('ipfs://', '')}
+                    src={
+                      'https://ipfs.io/ipfs/' +
+                      state.fileData.replace('ipfs://', '')
+                    }
                   />
                 </div>
               )}
@@ -193,8 +195,10 @@ function NFTForm({ address }) {
                   <audio
                     controls
                     className={'w-100'}
-                    src={'https://ipfs.io/ipfs/' +
-                      state.fileData.replace('ipfs://', '')}
+                    src={
+                      'https://ipfs.io/ipfs/' +
+                      state.fileData.replace('ipfs://', '')
+                    }
                   />
                 </div>
               )}
