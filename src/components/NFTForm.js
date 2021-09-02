@@ -222,7 +222,7 @@ function NFTForm({ address }) {
                     properties: state.properties,
                   });
                   const _tkn = await Oxsis.storeFileAsBlob(json);
-                  await oxsis.mintNFT(address, _tkn).then(()=>{
+                  await oxsis.mintNFT(address, _tkn).then(() => {
                     event({
                       action: 'mint',
                       params: {
@@ -238,8 +238,6 @@ function NFTForm({ address }) {
                       isLoading: false,
                     });
                   });
-
-                
                 }}>
                 Mint
               </Button>

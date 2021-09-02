@@ -1,3 +1,2 @@
-
 import { getRecord, readOnlyClient, client } from './identity';
-export {  getRecord, readOnlyClient, client };
+export { getRecord, readOnlyClient, client };
