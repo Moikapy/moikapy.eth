@@ -42,7 +42,7 @@ function NFTForm({ address }) {
     <div
       className={
         'nft-mint-form d-flex flex-column m-1 pb-5 mx-auto container-fluid h-auto'
-      }>
+      }> 
       <style global jsx>
         {`
           .file-widget {
@@ -81,6 +81,7 @@ function NFTForm({ address }) {
           <div
             className={`col-xl-6 m-3 p-2 border border-dark d-inline-flex flex-column`}>
             <h4>NFT INFO</h4>
+            Closed To The Public
             <hr />
             {Object.keys(_metadata).map((data, key) => (
               <FormInputs
