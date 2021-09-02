@@ -1,5 +1,5 @@
-# LAZY NFT APP
-> A Rarible Lazy Minting App
+# MOIKAPY.LAZYNFT.APP
+> MY POLYGON MINTING SITE
 
 ## How To Start
 - Without Docker
