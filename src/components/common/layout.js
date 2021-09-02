@@ -2,15 +2,11 @@ import { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import Navbar from './navbar';
 import LoginModal from '../loginModal';
-import { startCore, updateOnlineUserCount } from '../../actions/';
+import { startCore } from '../../actions/';
 import { useRouter } from 'next/router';
 function Layout({ children, layoutContainerStyle = '', startCore }) {
   const router = useRouter();
   const [show, setShow] = useState(false);
-  const [showSidebar, setShowSidebar] = useState(false);
-  useEffect(() => {
-    setShowSidebar(window.location.pathname !== '/');
-  }, [router.pathname]);
   // INITS WEB3 Functionality
   useEffect(() => {
     startCore();

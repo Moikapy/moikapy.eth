@@ -24,17 +24,6 @@ export const getQuote = async (
     console.log('getQuote()', error);
   }
 };
-/**
- *
- * @param {object} trns
- */
-export async function submitTransaction(trns) {
-  try {
-    await web3.eth.sendTransaction(trns);
-  } catch (error) {
-    console.log('submitTransaction()', error);
-  }
-}
 
 export function truncateAddress(address) {
   try {

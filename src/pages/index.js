@@ -37,11 +37,32 @@ function _index({ address, chainId }) {
       event({
         action: 'access_collection',
       });
+      if (window.ethereum) {
+
+        handleEthereum();
+      } else {
+        window.addEventListener('ethereum#initialized', handleEthereum, {
+          once: true,
+        });
+
+        // If the event is not dispatched by the end of the timeout,
+        // the user probably doesn't have MetaMask installed.
+        setTimeout(handleEthereum, 3000); // 3 seconds
+      }
+    }
+    function handleEthereum() {
+      const { ethereum } = window;
+      if (ethereum && ethereum.isMetaMask) {
+        // Access the decentralized web!
+        ethereum.request({ method: 'eth_requestAccounts' });
+      } else {
+        console.log('Please install MetaMask!');
+      }
     }
 
-    async () => {
-      Mount();
-    };
+    Mount();
+
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
@@ -80,7 +101,7 @@ function _index({ address, chainId }) {
         ) : (
           <p>Refresh</p>
         )}
-        {}
+        { }
       </div>
     </>
   );
