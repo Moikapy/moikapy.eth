@@ -33,6 +33,7 @@ function _index({ address, chainId }) {
         NFTs: array,
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
     function Mount() {
