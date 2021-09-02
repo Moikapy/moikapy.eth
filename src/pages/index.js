@@ -91,7 +91,7 @@ function _index({ address, chainId }) {
           }`}>
           {(address !== undefined && address.length == 0) || chainId !== 137 ? (
             <p className={'text-capitalize'}>
-              please connect to the polygon network to view collection
+              please connect to the matic network to view collection
             </p>
           ) : state.NFTs !== undefined && state.NFTs.length > 0 ? (
             state.NFTs.map(

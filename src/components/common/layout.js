@@ -48,6 +48,7 @@ function Layout({ children, layoutContainerStyle = '', startCore }) {
       <a href="#" id="open_preferences_center" className={'d-none'}>
         Open Preferences Center
       </a>
+      Contract Address: {process.env.CONTRACT_ADDRESS}
     </div>
   );
 }
