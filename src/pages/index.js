@@ -25,7 +25,7 @@ function _index({ address, chainId }) {
         setTimeout(handleEthereum, 3000); // 3 seconds
       }
     }
-    function handleEthereum() {
+    async function handleEthereum() {
       const { ethereum } = window;
       if (ethereum && ethereum.isMetaMask) {
         // Access the decentralized web!
