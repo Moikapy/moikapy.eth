@@ -144,7 +144,7 @@ function _index({ address, chainId }) {
                     })}
                     <hr />
                     <a
-                      rel={`noRef`}
+                      rel="noreferrer"
                       target="_blank"
                       href={`https://opensea.io/assets/matic/${process.env.CONTRACT_ADDRESS}/${_id}`}>
                       View On Opensea
