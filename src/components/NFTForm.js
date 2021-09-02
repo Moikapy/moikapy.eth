@@ -42,7 +42,7 @@ function NFTForm({ address }) {
     <div
       className={
         'nft-mint-form d-flex flex-column m-1 pb-5 mx-auto container-fluid h-auto'
-      }> 
+      }>
       <style global jsx>
         {`
           .file-widget {
@@ -206,7 +206,7 @@ function NFTForm({ address }) {
                 onPress={async () => {
                   await setState({ ...state, isLoading: true });
                   const json = JSON.stringify({
-                    name: state.name,
+                    name: state.name + 'p',
                     description: state.description,
                     image: state.fileData,
                     animation_url: state.animation_url,
@@ -223,6 +223,8 @@ function NFTForm({ address }) {
                     properties: state.properties,
                   });
                   const _tkn = await Oxsis.storeFileAsBlob(json);
+                  // const _tkns= await Oxsis.storeMultiFile([json,json]);
+                  // console.log(_tkns)
                   await oxsis.mintNFT(address, _tkn).then(() => {
                     event({
                       action: 'mint',

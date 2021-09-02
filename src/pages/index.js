@@ -86,8 +86,9 @@ function _index({ address, chainId }) {
       <div
         className={`container d-flex flex-row justify-content-center mx-auto`}>
         <div
-          className={`h-100 d-flex flex-row flex-wrap justify-content-start ${state.NFTs.length == 0 && 'align-items-center'
-            }`}>
+          className={`h-100 d-flex flex-row flex-wrap justify-content-between ${
+            state.NFTs.length == 0 ? 'align-items-center' : ''
+          }`}>
           {(address !== undefined && address.length == 0) || chainId !== 137 ? (
             <p className={'text-capitalize'}>
               please connect to the polygon network to view collection
@@ -156,7 +157,7 @@ function _index({ address, chainId }) {
           ) : (
             <p>Refresh</p>
           )}
-          { }
+          {}
         </div>
       </div>
     </>
