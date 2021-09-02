@@ -8,33 +8,6 @@ import { event } from 'utility/analytics';
 
 function _index({ address, chainId }) {
   const [state, setState] = useState({ collectionCount: 0, NFTs: [] });
-  useEffect(async () => {
-    oxsis = new Oxsis();
-    const wallet = process.env.WALLET_ADDRESS;
-    if (address !== undefined && address.length > 0 && chainId === 137) {
-      let NFTs = await oxsis.getNFTs(wallet);
-      let NFTCount = await oxsis.getNFTCount();
-      let array = [];
-      for await (const nft of NFTs) {
-        const _nft = await nft;
-        await fetch(_nft._uri)
-          .then(async (res) => await res.json())
-          .then(async (out) => {
-            out._id = _nft.tokenID;
-            await array.push(out);
-          })
-          .catch((err) => {
-            throw err;
-          });
-      }
-      setState({
-        ...state,
-        collectionCount: NFTCount,
-        NFTs: array,
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
   useEffect(() => {
     function Mount() {
       event({
@@ -57,6 +30,30 @@ function _index({ address, chainId }) {
       if (ethereum && ethereum.isMetaMask) {
         // Access the decentralized web!
         ethereum.request({ method: 'eth_requestAccounts' });
+        oxsis = new Oxsis();
+        const wallet = process.env.WALLET_ADDRESS;
+        if (address !== undefined && address.length > 0 && chainId === 137) {
+          let NFTs = await oxsis.getNFTs(wallet);
+          let NFTCount = await oxsis.getNFTCount();
+          let array = [];
+          for await (const nft of NFTs) {
+            const _nft = await nft;
+            await fetch(_nft._uri)
+              .then(async (res) => await res.json())
+              .then(async (out) => {
+                out._id = _nft.tokenID;
+                await array.push(out);
+              })
+              .catch((err) => {
+                throw err;
+              });
+          }
+          setState({
+            ...state,
+            collectionCount: NFTCount,
+            NFTs: array,
+          });
+        }
       } else {
         console.log('Please install MetaMask!');
       }
@@ -89,9 +86,8 @@ function _index({ address, chainId }) {
       <div
         className={`container d-flex flex-row justify-content-center mx-auto`}>
         <div
-          className={`h-100 d-flex flex-row flex-wrap justify-content-start ${
-            state.NFTs.length == 0 && 'align-items-center'
-          }`}>
+          className={`h-100 d-flex flex-row flex-wrap justify-content-start ${state.NFTs.length == 0 && 'align-items-center'
+            }`}>
           {(address !== undefined && address.length == 0) || chainId !== 137 ? (
             <p className={'text-capitalize'}>
               please connect to the polygon network to view collection
@@ -160,7 +156,7 @@ function _index({ address, chainId }) {
           ) : (
             <p>Refresh</p>
           )}
-          {}
+          { }
         </div>
       </div>
     </>
