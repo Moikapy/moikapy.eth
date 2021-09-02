@@ -32,7 +32,7 @@ function Layout({ children, layoutContainerStyle = '', startCore }) {
       {/* NAVBAR */}
       <Navbar
         navbarContainerStyle={'sticky-top border-top border-bottom border-dark'}
-        brandText={process.env.BRAND_NAME || 'MOIKAPY.ETH'}
+        brandText={process.env.BRAND_NAME || 'MOIKAPY.DEV'}
         brandTextStyle={`text-uppercase`}
         onClick={() => setShow(true)}
         onClickCreate={() => router.push('/mint')}
