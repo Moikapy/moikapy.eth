@@ -36,12 +36,7 @@ function NFTForm({ address }) {
     }
   };
   useEffect(() => {
-    (async () =>
-      (await detectEthereumProvider())
-        ? (web3 = window.ethereum)
-        : (web3 = process.env.API_URL))();
-
-    oxsis = new Oxsis(web3);
+    oxsis = new Oxsis(window.ethereum);
   }, []);
   return (
     <div
@@ -227,9 +222,7 @@ function NFTForm({ address }) {
                     properties: state.properties,
                   });
                   const _tkn = await Oxsis.storeFileAsBlob(json);
-                  await Oxsis.mintNFT(address, _tkn);
-
-                  if (_tkn !== undefined) {
+                  await oxsis.mintNFT(address, _tkn).then(()=>{
                     event({
                       action: 'mint',
                       params: {
@@ -244,7 +237,9 @@ function NFTForm({ address }) {
                       disable: !state.disable,
                       isLoading: false,
                     });
-                  }
+                  });
+
+                
                 }}>
                 Mint
               </Button>

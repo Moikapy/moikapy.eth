@@ -21,7 +21,7 @@ export default class oxsis {
       setting == 'metamask'
         ? new ethers.providers.Web3Provider(provider)
         : new ethers.providers.JsonRpcProvider(provider);
-
+    this.mintNFT = oxsis.mintNFT.bind(this);
     this.getNFTs = oxsis.getNFTs.bind(this);
     this.getNFTCount = oxsis.getNFTCount.bind(this);
   }
@@ -76,7 +76,7 @@ export default class oxsis {
   };
   //
   //
-  static getGasPrice = async () => await web3.getGasPrice();
+  static getGasPrice = async () => { const provider = await new ethers.providers.Web3Provider(window.ethereum); await provider.getGasPrice();}
   //
   static getContract = (contractJson, contractAddress) => {
     // const contractAddress = process.env.CONTRACT_ADDRESS;
@@ -94,7 +94,6 @@ export default class oxsis {
     // what Metamask injects as window.ethereum into each page
     const provider = await new ethers.providers.Web3Provider(window.ethereum);
     const sign = await provider.getSigner();
-    console.log('sign', sign, transaction);
     await sign.sendTransaction(transaction, function (error, hash) {
       if (!error) {
         console.log(
@@ -176,21 +175,6 @@ export default class oxsis {
       throw error;
     }
   };
-  //Stores Metaadata and Returns IPFS CID
-  static storeMetadata = async (image) => {
-    let _image = this.storeAsFile([image], image[0].name, {
-      type: image[0].type,
-    });
-    const _metadata = await nft_storage.store({
-      name: 'test',
-      description: 'test',
-      image: _image,
-    });
-    return {
-      _metadata,
-      url: _metadata.url,
-    };
-  };
 
   static mintNFT = async (address, tokenURI) => {
     // A Web3Provider wraps a standard Web3 provider, which is
@@ -201,12 +185,12 @@ export default class oxsis {
     // send ether and pay to change state within the blockchain.
     // For this, you need the account signer...
     const signer = await provider.getSigner();
-    console.log('signer', signer);
+    // console.log('signer', signer);
     var abi = require('../../artifacts/contracts/ERC721.sol/ERC721_V1.json');
     var contract = await new ethers.Contract(
       process.env.CONTRACT_ADDRESS,
       abi.abi,
-      web3
+      provider
     );
     var contractSign = await contract.connect(signer);
     var gas = await this.getGasPrice();
@@ -233,7 +217,6 @@ export default class oxsis {
     // send ether and pay to change state within the blockchain.
     // For this, you need the account signer...
     const signer = provider.getSigner();
-    console.log('signer', signer);
     var abi = require('../../artifacts/contracts/ERC721.sol/ERC721_V1.json');
     var contract = new ethers.Contract(
       process.env.CONTRACT_ADDRESS,
