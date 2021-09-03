@@ -206,7 +206,7 @@ function NFTForm({ address }) {
                 onPress={async () => {
                   await setState({ ...state, isLoading: true });
                   const json = JSON.stringify({
-                    name: state.name + 'p',
+                    name: state.name,
                     description: state.description,
                     image: state.fileData,
                     animation_url: state.animation_url,
