@@ -181,7 +181,7 @@ export default class Oxsis {
         this.web3
       );
       var contractSign = await contract.connect(signer);
-      var gas = await this.getGasPrice();
+      var gas = await this.web3.getGasPrice()
       var data = await contractSign.mintNFT(
         address,
         'https://ipfs.io/ipfs/' + tokenURI
@@ -226,6 +226,66 @@ export default class Oxsis {
       .catch((err) => {
         throw err;
       });
+  };
+  getNFTURI = async (id) => {
+    // A Web3Provider wraps a standard Web3 provider, which is
+    // what Metamask injects as window.ethereum into each page
+    // const provider = new ethers.providers.Web3Provider(window.ethereum);
+
+    // The Metamask plugin also allows signing transactions to
+    // send ether and pay to change state within the blockchain.
+    // For this, you need the account signer...
+    if (this.web3 !== undefined) {
+      const signer = this.web3.getSigner();
+      var abi = require('../../artifacts/contracts/ERC721.sol/ERC721_V1.json');
+      var contract = new ethers.Contract(
+        process.env.CONTRACT_ADDRESS,
+        abi.abi,
+        this.web3
+      );
+      var contractSign = await contract.connect(signer);
+
+      return await contractSign.tokenURI('0x' + id);;
+    } else {
+      return [];
+    }
+  };
+  getCollection = async (ddr) => {
+    // A Web3Provider wraps a standard Web3 provider, which is
+    // what Metamask injects as window.ethereum into each page
+    // const provider = new ethers.providers.Web3Provider(window.ethereum);
+
+    // The Metamask plugin also allows signing transactions to
+    // send ether and pay to change state within the blockchain.
+    // For this, you need the account signer...
+    if (this.web3 !== undefined) {
+      const signer = this.web3.getSigner();
+      var abi = require('../../artifacts/contracts/ERC721.sol/ERC721_V1.json');
+      var contract = new ethers.Contract(
+        process.env.CONTRACT_ADDRESS,
+        abi.abi,
+        this.web3
+      );
+      var contractSign = await contract.connect(signer);
+      var arr = [];
+      await contractSign
+        .getTotalItemsMinted()
+        .then((res) => {
+          for (var i = 0; i < parseInt(Number(res._hex), 10); i++) {
+            var id = i + 1;
+            const handleURI = async (id) => await contractSign.tokenURI('0x' + id);
+            // console.log('handleURI', handleURI(id));
+            arr.push({ tokenID: id, _uri: handleURI(id) });
+          }
+        })
+        .catch((err) => {
+          throw err;
+        });
+      // console.log(arr)
+      return arr;
+    } else {
+      return [];
+    }
   };
   getNFTs = async (addr) => {
     // A Web3Provider wraps a standard Web3 provider, which is

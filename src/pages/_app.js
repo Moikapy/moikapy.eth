@@ -46,7 +46,7 @@ function MyApp({ Component, pageProps }) {
         <meta charset="UTF-8"></meta>
         <meta
           name="description"
-          content="LAZYMINT.APP: A Simple Web App that allows users to Lazy Mint their work to Rarible and the Ethereum Blockchain. Built with a NFT Focused Gas Station to Display the Latest Transaction Gas Fees. Using The Rarible Protocol and 3box to build a cross-chain platform"
+          content="MOIKAPY.DEV: A Minimalistic web2.0/web3.0 site created to Display the NFT Collection of moikapy.eth and Provide for NFT Holders and NFT Collectors who utilize the Matic Network."
         />
         <title>
           MOIKAPY {router.pathname !== '/' ? router.pathname.toUpperCase() : ''}

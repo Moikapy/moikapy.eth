@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import Oxsis from 'lib/oxsis';
 
-let web3, oxsis;
+let oxsis;
 import { event } from 'utility/analytics';
 
 function _index({ address, chainId }) {
@@ -33,12 +33,13 @@ function _index({ address, chainId }) {
         oxsis = new Oxsis();
         const wallet = process.env.WALLET_ADDRESS;
         if (address !== undefined && address.length > 0 && chainId === 137) {
-          let NFTs = await oxsis.getNFTs(wallet);
+          let NFTs = await oxsis.getCollection();
           let NFTCount = await oxsis.getNFTCount();
           let array = [];
           for await (const nft of NFTs) {
             const _nft = await nft;
-            await fetch(_nft._uri)
+            const uri = await _nft._uri
+            await fetch(uri)
               .then(async (res) => await res.json())
               .then(async (out) => {
                 out._id = _nft.tokenID;
@@ -69,7 +70,7 @@ function _index({ address, chainId }) {
         {`
           .nft-card {
             max-width: 315px;
-            max-height: 650px;
+            max-height: 625px;
             height: 100%;
             width: 100%;
             min-height: 150px;
