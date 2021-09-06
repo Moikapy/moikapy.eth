@@ -42,7 +42,7 @@ function Layout({ children, layoutContainerStyle = '', startCore }) {
         <main className={`p-2 w-100 h-100 ${layoutContainerStyle}`}>
           {children}
           <div className="text-center w-100 p-3 mx-auto">
-            Contract Address: {process.env.CONTRACT_ADDRESS}
+            Contract Address: <a  href={`https://polygonscan.com/address/${process.env.CONTRACT_ADDRESS}`}>{process.env.CONTRACT_ADDRESS}</a>
           </div>
         </main>
       </div>

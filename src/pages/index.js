@@ -149,12 +149,19 @@ function _index({ address, chainId }) {
                       }
                     })}
                     <hr />
+                    <div className={`d-flex flex-row justify-content-between`}>
+                    <a
+                      
+                      href={`token/${_id}`}>
+                      View Here
+                    </a>
                     <a
                       rel="noreferrer"
                       target="_blank"
                       href={`https://opensea.io/assets/matic/${process.env.CONTRACT_ADDRESS}/${_id}`}>
                       View On Opensea
                     </a>
+                    </div>
                   </div>
                 </div>
               )
