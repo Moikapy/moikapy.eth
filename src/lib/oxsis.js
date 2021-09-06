@@ -181,7 +181,7 @@ export default class Oxsis {
         this.web3
       );
       var contractSign = await contract.connect(signer);
-      var gas = await this.web3.getGasPrice()
+      var gas = await this.web3.getGasPrice();
       var data = await contractSign.mintNFT(
         address,
         'https://ipfs.io/ipfs/' + tokenURI
@@ -245,7 +245,7 @@ export default class Oxsis {
       );
       var contractSign = await contract.connect(signer);
 
-      return await contractSign.tokenURI('0x' + id);;
+      return await contractSign.tokenURI('0x' + id);
     } else {
       return [];
     }
@@ -273,7 +273,8 @@ export default class Oxsis {
         .then((res) => {
           for (var i = 0; i < parseInt(Number(res._hex), 10); i++) {
             var id = i + 1;
-            const handleURI = async (id) => await contractSign.tokenURI('0x' + id);
+            const handleURI = async (id) =>
+              await contractSign.tokenURI('0x' + id);
             // console.log('handleURI', handleURI(id));
             arr.push({ tokenID: id, _uri: handleURI(id) });
           }

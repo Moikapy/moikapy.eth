@@ -31,13 +31,13 @@ function _index({ address, chainId }) {
       const { ethereum } = window;
       if (ethereum && ethereum.isMetaMask) {
         let array = [];
-       
+
         // Access the decentralized web!
         ethereum.request({ method: 'eth_requestAccounts' });
         oxsis = new Oxsis();
         if (address !== undefined && address.length > 0 && chainId === 137) {
           let NFTs = await oxsis.getNFTs(address);
-          
+
           for await (const nft of NFTs) {
             const _nft = await nft;
             await fetch(_nft._uri)
@@ -53,7 +53,7 @@ function _index({ address, chainId }) {
           if (array.length == 0) {
             router.push('/');
           }
-        }else{
+        } else {
           if (array.length == 0) {
             router.push('/');
           }
@@ -74,8 +74,8 @@ function _index({ address, chainId }) {
     <>
       <style jsx>{``}</style>
       <div
-        className={`container h-100 d-flex flex-row justify-content-center align-items-center`}>
-        OASIS COMING SOON
+        className={`container h-100 d-flex flex-row justify-content-center align-items-center text-uppercase`}>
+        The Lounge COMING SOON
       </div>
     </>
   );

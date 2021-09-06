@@ -87,7 +87,7 @@ function Navbar({
         }
         .oasis-button {
           width: 7.8125rem;
-          color:#000;
+          color: #000;
         }
         .cursor-point {
           cursor: pointer;
@@ -101,16 +101,20 @@ function Navbar({
       <div className={`d-none d-sm-flex flex-row`}>
         {
           <Button
-            buttonStyle={`oasis-button py-0 ${state.NFTs.length == 0
+            buttonStyle={`oasis-button py-0 ${
+              state.NFTs.length == 0
                 ? 'btn-outline-danger'
                 : 'btn-outline-success'
-              }`}
-            onPress={() => state.NFTs.length !== 0 && router.push('/oasis')}>
-            <span title={
-              state.NFTs.length == 0
-                ? 'For Token Holders'
-                : 'Welcome Token Holder'
-            }>The Oasis</span>
+            }`}
+            onPress={() => state.NFTs.length !== 0 && router.push('/lounge')}>
+            <span
+              title={
+                state.NFTs.length == 0
+                  ? 'For Token Holders'
+                  : 'Welcome Token Holder'
+              }>
+              The Lounge
+            </span>
           </Button>
         }
         {address !== undefined && address.length > 0 && (

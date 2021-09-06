@@ -19,6 +19,9 @@ const nextConfig = {
   async rewrites() {
     return [];
   },
+  images: {
+    domains: ['ipfs.io'],
+  },
   env: {
     INFURA_API: process.env.INFURA_API,
     BRAND_NAME: process.env.BRAND_NAME,

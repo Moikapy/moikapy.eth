@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
 import Oxsis from 'lib/oxsis';
-
+import Image from 'next/image';
 let oxsis;
 import { event } from 'utility/analytics';
 
@@ -33,12 +33,13 @@ function _index({ address, chainId }) {
         oxsis = new Oxsis();
         const wallet = process.env.WALLET_ADDRESS;
         if (address !== undefined && address.length > 0 && chainId === 137) {
-          let NFTs = await oxsis.getCollection();
           let NFTCount = await oxsis.getNFTCount();
+          async function getNFTs() {
+          let NFTs = await oxsis.getCollection();
           let array = [];
           for await (const nft of NFTs) {
             const _nft = await nft;
-            const uri = await _nft._uri
+            const uri = await _nft._uri;
             await fetch(uri)
               .then(async (res) => await res.json())
               .then(async (out) => {
@@ -49,10 +50,12 @@ function _index({ address, chainId }) {
                 throw err;
               });
           }
+            return array;
+          }
           setState({
             ...state,
             collectionCount: NFTCount,
-            NFTs: array,
+            NFTs: await getNFTs(),
           });
         }
       } else {
@@ -87,9 +90,8 @@ function _index({ address, chainId }) {
       <div
         className={`container d-flex flex-row justify-content-center mx-auto`}>
         <div
-          className={`h-100 d-flex flex-row flex-wrap justify-content-between ${
-            state.NFTs.length == 0 ? 'align-items-center' : ''
-          }`}>
+          className={`h-100 d-flex flex-row flex-wrap justify-content-between ${state.NFTs.length == 0 ? 'align-items-center' : ''
+            }`}>
           {(address !== undefined && address.length == 0) || chainId !== 137 ? (
             <p className={'text-capitalize'}>
               please connect to the matic network to view collection
@@ -120,9 +122,11 @@ function _index({ address, chainId }) {
                   <hr />
                   <div className={`h-100 w-100`}>
                     {
-                      <img
+                      <Image
+                        height={'100%'}
+                        width={'100%'}
+                        layout='responsive'
                         title={name + '; ' + description}
-                        className={`h-100 w-100`}
                         src={image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
                       />
                     }
@@ -158,7 +162,7 @@ function _index({ address, chainId }) {
           ) : (
             <p>Refresh</p>
           )}
-          {}
+          { }
         </div>
       </div>
     </>

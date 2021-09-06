@@ -41,7 +41,9 @@ function Layout({ children, layoutContainerStyle = '', startCore }) {
         {/**Main Content */}
         <main className={`p-2 w-100 h-100 ${layoutContainerStyle}`}>
           {children}
-          <div className='text-center w-100 p-3 mx-auto'>Contract Address: {process.env.CONTRACT_ADDRESS}</div>
+          <div className="text-center w-100 p-3 mx-auto">
+            Contract Address: {process.env.CONTRACT_ADDRESS}
+          </div>
         </main>
       </div>
       {/* LOGIN MODAL */}
@@ -49,7 +51,6 @@ function Layout({ children, layoutContainerStyle = '', startCore }) {
       <a href="#" id="open_preferences_center" className={'d-none'}>
         Open Preferences Center
       </a>
-      
     </div>
   );
 }
