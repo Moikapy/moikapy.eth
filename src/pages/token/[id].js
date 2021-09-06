@@ -13,9 +13,7 @@ function _index({ address, chainId }) {
   const router = useRouter();
   const { id } = router.query;
   useEffect(() => {
-    event({
-      action: 'access_collection',
-    });
+
     if (window.ethereum) {
       handleEthereum();
     } else {
@@ -38,6 +36,9 @@ function _index({ address, chainId }) {
         if (address !== undefined && address.length > 0 && chainId === 137) {
           let NFTCount = await oxsis.getNFTCount();
           if (id !== undefined) {
+            event({
+              action: `token_${id}`,
+            });
             let NFT = await oxsis.getNFTURI(id);
             let _NFT = await fetch(NFT)
               .then(async (res) => await res.json())
@@ -65,11 +66,11 @@ function _index({ address, chainId }) {
   }, [id]);
   return (
     <>
-    <Head>
+      <Head>
         <title>
           MOIKAPY {router.pathname !== '/' ? router.pathname.replace('[id]', id).toUpperCase() : ''}
         </title>
-    </Head>
+      </Head>
       <style jsx>
         {`
           .nft-card {
