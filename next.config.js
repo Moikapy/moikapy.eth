@@ -12,12 +12,25 @@ const nextConfig = {
     // Solve compiling problem via vagrant
     config.watchOptions = {
       poll: 1000, // Check for changes every second
-      aggregateTimeout: 300, // delay before rebuilding
+      aggregateTimeout: 800, // delay before rebuilding
     };
     return config;
   },
   async rewrites() {
-    return [];
+    return [
+      {
+        source: '/Lounge',
+        destination: '/lounge',
+      },
+      {
+        source: '/Token/:id',
+        destination: '/token/:id',
+      },
+      {
+        source: '/Token',
+        destination: '/token/1',
+      },
+    ]
   },
   images: {
     domains: ['ipfs.io'],
