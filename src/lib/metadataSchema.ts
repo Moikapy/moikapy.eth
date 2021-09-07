@@ -1,3 +1,5 @@
+// require('dotenv').config();
+// const { WALLET_ADDRESS, ROYALTIES, POLYGON_KEY } = process.env;
 export interface IMetadata {
   name: string;
   description: string;
@@ -8,6 +10,7 @@ export interface IMetadata {
   youtube_url: string;
   attributes: object[];
   properties: object[];
+  fee_recipient: string;
 }
 var _metadata: IMetadata = {
   name: '',
@@ -19,6 +22,7 @@ var _metadata: IMetadata = {
   youtube_url: '',
   attributes: [],
   properties: [],
+  fee_recipient: process.env.WALLET_ADDRESS,
 };
 var _metadataTypes = {
   nameType: 'string',

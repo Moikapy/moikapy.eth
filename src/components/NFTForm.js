@@ -37,6 +37,9 @@ function NFTForm({ address }) {
   };
   useEffect(() => {
     oxsis = new Oxsis(window.ethereum);
+    oxsis.getRoyaltiesPercentage().then((percentage) => {
+      console.log(parseInt(Number(percentage._hex), 10));
+    });
   }, []);
   return (
     <div
@@ -206,6 +209,7 @@ function NFTForm({ address }) {
                 onPress={async () => {
                   await setState({ ...state, isLoading: true });
                   const json = JSON.stringify({
+                    ..._metadata,
                     name: state.name,
                     description: state.description,
                     image: state.fileData,
@@ -221,25 +225,24 @@ function NFTForm({ address }) {
                       },
                     ],
                     properties: state.properties,
+                    seller_fee_basis_points: 500,
                   });
-                  const _tkn = await Oxsis.storeFileAsBlob(json);
-                  // const _tkns= await Oxsis.storeMultiFile([json,json]);
-                  // console.log(_tkns)
-                  await oxsis.mintNFT(address, _tkn).then(() => {
-                    event({
-                      action: 'mint',
-                      params: {
-                        event_category: 'mint',
-                        event_label: 'mint',
-                      },
-                    });
 
-                    setState({
-                      ...state,
-                      token: token.token,
-                      disable: !state.disable,
-                      isLoading: false,
-                    });
+                  const _tkn = await Oxsis.storeFileAsBlob(json);
+                  await oxsis.mintNFT(address, _tkn);
+                  event({
+                    action: 'mint',
+                    params: {
+                      event_category: 'mint',
+                      event_label: 'mint',
+                    },
+                  });
+
+                  setState({
+                    ...state,
+                    token: _tkn,
+                    disable: !state.disable,
+                    isLoading: false,
                   });
                 }}>
                 Mint

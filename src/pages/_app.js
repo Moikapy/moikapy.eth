@@ -49,7 +49,10 @@ function MyApp({ Component, pageProps }) {
           content="MOIKAPY.DEV: A Minimalistic web2.0/web3.0 site created to Display the NFT Collection of moikapy.eth and Provide for NFT Holders and NFT Collectors who utilize the Matic Network."
         />
         <title>
-          MOIKAPY {router.pathname !== '/' ? router.pathname.replace('/[id]','').toUpperCase() : ''}
+          MOIKAPY{' '}
+          {router.pathname !== '/'
+            ? router.pathname.replace('/[id]', '').toUpperCase()
+            : ''}
         </title>
       </Head>
 

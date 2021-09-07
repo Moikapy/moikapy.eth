@@ -13,7 +13,6 @@ function _index({ address, chainId }) {
   const router = useRouter();
   const { id } = router.query;
   useEffect(() => {
-
     if (window.ethereum) {
       handleEthereum();
     } else {
@@ -48,7 +47,7 @@ function _index({ address, chainId }) {
               .catch((err) => {
                 throw err;
               });
-            console.log(_NFT)
+            console.log(_NFT);
             _NFT['_id'] = await id;
             setState({
               ...state,
@@ -68,7 +67,10 @@ function _index({ address, chainId }) {
     <>
       <Head>
         <title>
-          MOIKAPY {router.pathname !== '/' ? router.pathname.replace('[id]', id).toUpperCase() : ''}
+          MOIKAPY{' '}
+          {router.pathname !== '/'
+            ? router.pathname.replace('[id]', id).toUpperCase()
+            : ''}
         </title>
       </Head>
       <style jsx>
@@ -93,56 +95,68 @@ function _index({ address, chainId }) {
         className={`container w-100 h-100 d-flex flex-row justify-content-center`}>
         {console.log(state.NFTs)}
         <div
-          className={`h-100 w-100 d-flex flex-row flex-wrap justify-content-center ${state.NFTs.length == 0 ? 'align-items-center' : ''
-            }`}>
+          className={`h-100 w-100 d-flex flex-row flex-wrap justify-content-center ${
+            state.NFTs.length == 0 ? 'align-items-center' : ''
+          }`}>
           {(address !== undefined && address.length == 0) || chainId !== 137 ? (
             <p className={'text-capitalize'}>
               please connect to the matic network to view collection
             </p>
           ) : state.NFTs !== undefined && state.NFTs.length > 0 ? (
-            <>   <div
-              className={
-                'nft-card card p-3 m-1 d-flex flex-column justify-content-between'
-              }>
-              ID:{state.NFTs[0]._id}
-              <hr />
-              <div className={`h-100 w-100`}>
-                {
-                  <Image
-                    height={'100%'}
-                    width={'100%'}
-                    layout='responsive'
-                    title={state.NFTs[0].name + '; ' + state.NFTs[0].description}
-                    src={state.NFTs[0].image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
-                  />
-                }
+            <>
+              {' '}
+              <div
+                className={
+                  'nft-card card p-3 m-1 d-flex flex-column justify-content-between'
+                }>
+                ID:{state.NFTs[0]._id}
                 <hr />
-                <p className={`m-0`}>{state.NFTs[0].name}</p>
-                <hr />
-                <p className={`m-0 desc-section text-wrap`}>
-                  {state.NFTs[0].description.length > 0 ? state.NFTs[0].description : 'N/A'}
-                </p>
-              </div>
-              <div className={`h-100 w-100`}>
-                <hr />
-                {state.NFTs[0].attributes.map(({ trait_type, value }, key) => {
-                  if (trait_type === 'File Type:') {
-                    return (
-                      <p key={key} className={`m-0`}>
-                        {trait_type} {value}
-                      </p>
-                    );
+                <div className={`h-100 w-100`}>
+                  {
+                    <Image
+                      height={'100%'}
+                      width={'100%'}
+                      layout="responsive"
+                      title={
+                        state.NFTs[0].name + '; ' + state.NFTs[0].description
+                      }
+                      src={state.NFTs[0].image.replace(
+                        'ipfs://',
+                        'https://ipfs.io/ipfs/'
+                      )}
+                    />
                   }
-                })}
-                <hr />
-                <a
-                  rel="noreferrer"
-                  target="_blank"
-                  href={`https://opensea.io/assets/matic/${process.env.CONTRACT_ADDRESS}/${state.NFTs[0]._id}`}>
-                  View On Opensea
-                </a>
+                  <hr />
+                  <p className={`m-0`}>{state.NFTs[0].name}</p>
+                  <hr />
+                  <p className={`m-0 desc-section text-wrap`}>
+                    {state.NFTs[0].description.length > 0
+                      ? state.NFTs[0].description
+                      : 'N/A'}
+                  </p>
+                </div>
+                <div className={`h-100 w-100`}>
+                  <hr />
+                  {state.NFTs[0].attributes.map(
+                    ({ trait_type, value }, key) => {
+                      if (trait_type === 'File Type:') {
+                        return (
+                          <p key={key} className={`m-0`}>
+                            {trait_type} {value}
+                          </p>
+                        );
+                      }
+                    }
+                  )}
+                  <hr />
+                  <a
+                    rel="noreferrer"
+                    target="_blank"
+                    href={`https://opensea.io/assets/matic/${process.env.CONTRACT_ADDRESS}/${state.NFTs[0]._id}`}>
+                    View On Opensea
+                  </a>
+                </div>
               </div>
-            </div>
             </>
           ) : (
             <p>Error... NFT MAY NOT EXIST... TRY REFRESHING...</p>

@@ -11,7 +11,8 @@
     "lint": "next lint",
     "compile": "npx hardhat compile",
     "deploy:dev": "npx hardhat run --network rinkeby scripts/deploy.js",
-    "deploy": "npx hardhat run --network matic scripts/deploy.js"
+    "deploy": "npx hardhat run --network matic scripts/deploy.js",
+    "upgrade-contract": "npx hardhat run --network matic scripts/upgrade.js"
   },
   "pre-commit": [
     "format",

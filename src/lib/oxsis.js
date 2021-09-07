@@ -182,21 +182,18 @@ export default class Oxsis {
       );
       var contractSign = await contract.connect(signer);
       var gas = await this.web3.getGasPrice();
-      var data = await contractSign.mintNFT(
-        address,
-        'https://ipfs.io/ipfs/' + tokenURI
-      );
-      const tx = {
-        from: address,
-        to: process.env.CONTRACT_ADDRESS,
-        gas: gas,
-        maxPriorityFeePerGas: 1999999987,
-        data: data,
-      };
-      const _tx = await this.sendTransaction(tx);
-      return _tx;
+      var data = await contractSign
+        .mintNFT(address, 'https://ipfs.io/ipfs/' + tokenURI)
+        .then((res) => {
+          return res;
+        })
+        .catch((err) => {
+          return err;
+        });
+      console.log('tx', data);
+      return data;
     } else {
-      console.log('Web3 is not defined');
+      throw new Error('Web3 is not defined');
     }
   };
 
@@ -248,6 +245,30 @@ export default class Oxsis {
       return await contractSign.tokenURI('0x' + id);
     } else {
       return [];
+    }
+  };
+  getRoyaltiesPercentage = async () => {
+    // A Web3Provider wraps a standard Web3 provider, which is
+    // what Metamask injects as window.ethereum into each page
+    // const provider = new ethers.providers.Web3Provider(window.ethereum);
+
+    // The Metamask plugin also allows signing transactions to
+    // send ether and pay to change state within the blockchain.
+    // For this, you need the account signer...
+    if (this.web3 !== undefined) {
+      const signer = this.web3.getSigner();
+
+      var abi = require('../../artifacts/contracts/ERC721.sol/ERC721_V1.json');
+      var contract = new ethers.Contract(
+        process.env.CONTRACT_ADDRESS,
+        abi.abi,
+        this.web3
+      );
+      var contractSign = await contract.connect(signer);
+
+      return await contractSign.getRoyaltiesPercentage();
+    } else {
+      return 0;
     }
   };
   getCollection = async (ddr) => {

@@ -1,3 +1,25 @@
+/**
+ * https://github.com/maticnetwork/pos-portal/blob/master/contracts/common/ContextMixin.sol
+ */
+abstract contract ContextMixin {
+  function msgSender() internal view returns (address payable sender) {
+    if (msg.sender == address(this)) {
+      bytes memory array = msg.data;
+      uint256 index = msg.data.length;
+      assembly {
+        // Load the 32 bytes word from memory with the address on the lower 20 bytes, and mask those.
+        sender := and(
+          mload(add(array, index)),
+          0xffffffffffffffffffffffffffffffffffffffff
+        )
+      }
+    } else {
+      sender = payable(msg.sender);
+    }
+    return sender;
+  }
+}
+
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.3;
 
@@ -17,6 +39,7 @@ import 'hardhat/console.sol';
 
 contract ERC721_V1 is
   Initializable,
+  ContextMixin,
   OwnableUpgradeable,
   ERC721Upgradeable,
   ERC721EnumerableUpgradeable,
@@ -40,12 +63,27 @@ contract ERC721_V1 is
 
   /* Inits Contract */
   function initialize() public initializer {
-    __ERC721_init("Moia Studios", 'MOISS');
+    __ERC721_init('Moia Studios', 'MOISS');
     __ERC721Enumerable_init();
     __ERC721URIStorage_init();
     __Ownable_init();
     _royaltiesReceiver = 0xa8D145Dd3003817dA1DC83F838Ee5088B65Acf2e;
-    _royaltiesPercentage = 20;
+    _royaltiesPercentage = 7;
+  }
+
+  /**
+   * This is used instead of msg.sender as transactions won't be sent by the original token owner, but by OpenSea.
+   */
+  function _msgSender() internal view override returns (address sender) {
+    return ContextMixin.msgSender();
+  }
+
+  function _transfer(
+    address from,
+    address to,
+    uint256 tokenId
+  ) internal override(ERC721Upgradeable) {
+    super._transfer(from, to, tokenId);
   }
 
   function _beforeTokenTransfer(
@@ -78,22 +116,9 @@ contract ERC721_V1 is
     return _tokenIds.current();
   }
 
-  /// @notice Returns all the tokens Minted in the contract
-  /// @return contratTokens - an array containing the ids of all tokens
-  ///         owned by the Contract
-  function fetchItemsMinted() public view returns (NFTItem[] memory) {
-    uint256 totalItemCount = _tokenIds.current();
-    uint256 itemCount = 0;
-    uint256 currentIndex = 0;
-
-    NFTItem[] memory contractTokens = new NFTItem[](itemCount);
-    for (uint256 i = 0; i < totalItemCount; i++) {
-      uint256 currentId = i + 1;
-      NFTItem storage currentItem = idToNFTItem[currentId];
-      contractTokens[currentIndex] = currentItem;
-      currentIndex += 1;
-    }
-    return contractTokens;
+  /* Returns the number Items mint inn the contract */
+  function getRoyaltiesPercentage() public view returns (uint256) {
+    return _royaltiesPercentage;
   }
 
   /// @notice Returns all the tokens owned by an address
@@ -127,12 +152,11 @@ contract ERC721_V1 is
     onlyOwner
     returns (uint256)
   {
-
     require(bytes(_tokenURI).length > 0); // dev: Hash can not be empty!
     _tokenIds.increment();
 
     uint256 tokenId = _tokenIds.current();
-    _mint(creator, tokenId);
+    _safeMint(creator, tokenId);
     _setTokenURI(tokenId, _tokenURI);
     idToNFTItem[tokenId] = NFTItem(tokenId, creator);
 
@@ -186,5 +210,30 @@ contract ERC721_V1 is
   {
     require(newRoyaltiesReceiver != _royaltiesReceiver); // dev: Same address
     _royaltiesReceiver = newRoyaltiesReceiver;
+  }
+
+  /// @notice Changes the royalties' percentage of contract
+  /// @param newRoyalties - address of the new royalties recipient
+  function setRoyalties(uint256 newRoyalties) external onlyOwner {
+    require(newRoyalties != _royaltiesPercentage); // dev: Same address
+    _royaltiesPercentage = newRoyalties;
+  }
+
+  /**
+   * Override isApprovedForAll to auto-approve OS's proxy contract
+   */
+  function isApprovedForAll(address _owner, address _operator)
+    public
+    view
+    override
+    returns (bool isOperator)
+  {
+    // if OpenSea's ERC721 Proxy Address is detected, auto-return true
+    if (_operator == address(0x58807baD0B376efc12F5AD86aAc70E78ed67deaE)) {
+      return true;
+    }
+
+    // otherwise, use the default ERC721.isApprovedForAll()
+    return ERC721Upgradeable.isApprovedForAll(_owner, _operator);
   }
 }

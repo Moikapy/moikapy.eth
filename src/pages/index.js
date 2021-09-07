@@ -32,30 +32,30 @@ function _index({ address, chainId }) {
         oxsis = new Oxsis();
         const wallet = process.env.WALLET_ADDRESS;
         // if (address !== undefined && address.length > 0 && chainId === 137) {
-          let NFTCount = await oxsis.getNFTCount();
-          async function getNFTs() {
-            let NFTs = await oxsis.getCollection();
-            let array = [];
-            for await (const nft of NFTs) {
-              const _nft = await nft;
-              const uri = await _nft._uri;
-              await fetch(uri)
-                .then(async (res) => await res.json())
-                .then(async (out) => {
-                  out._id = _nft.tokenID;
-                  await array.push(out);
-                })
-                .catch((err) => {
-                  throw err;
-                });
-            }
-            return array;
+        let NFTCount = await oxsis.getNFTCount();
+        async function getNFTs() {
+          let NFTs = await oxsis.getCollection();
+          let array = [];
+          for await (const nft of NFTs) {
+            const _nft = await nft;
+            const uri = await _nft._uri;
+            await fetch(uri)
+              .then(async (res) => await res.json())
+              .then(async (out) => {
+                out._id = _nft.tokenID;
+                await array.push(out);
+              })
+              .catch((err) => {
+                throw err;
+              });
           }
-          setState({
-            ...state,
-            collectionCount: NFTCount,
-            NFTs: await getNFTs(),
-          });
+          return array;
+        }
+        setState({
+          ...state,
+          collectionCount: NFTCount,
+          NFTs: await getNFTs(),
+        });
         // }
       } else {
         console.log('Please install MetaMask!');
@@ -86,16 +86,18 @@ function _index({ address, chainId }) {
       </style>
       <div
         className={`container d-flex flex-column justify-content-start mx-auto`}>
-
         <p className={`h4`}>Total NFT: {state.collectionCount}</p>
-        <a href="https://opensea.io/collection/moia-studios">Collection on Opensea</a>
+        <a href="https://opensea.io/collection/moia-studios">
+          Collection on Opensea
+        </a>
         <hr />
       </div>
       <div
         className={`container d-flex flex-row justify-content-center mx-auto`}>
         <div
-          className={`h-100 d-flex flex-row flex-wrap justify-content-between ${state.NFTs.length == 0 ? 'align-items-center' : ''
-            }`}>
+          className={`h-100 d-flex flex-row flex-wrap justify-content-between ${
+            state.NFTs.length == 0 ? 'align-items-center' : ''
+          }`}>
           {(address !== undefined && address.length == 0) || chainId !== 137 ? (
             <p className={'text-capitalize'}>
               please connect to the matic network to view collection
@@ -129,7 +131,7 @@ function _index({ address, chainId }) {
                       <Image
                         height={'100%'}
                         width={'100%'}
-                        layout='responsive'
+                        layout="responsive"
                         title={name + '; ' + description}
                         src={image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
                       />
@@ -154,11 +156,7 @@ function _index({ address, chainId }) {
                     })}
                     <hr />
                     <div className={`d-flex flex-row justify-content-between`}>
-                      <a
-
-                        href={`token/${_id}`}>
-                        View Here
-                      </a>
+                      <a href={`token/${_id}`}>View Here</a>
                       <a
                         rel="noreferrer"
                         target="_blank"
