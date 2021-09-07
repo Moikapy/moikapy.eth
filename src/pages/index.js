@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-
 import Oxsis from 'lib/oxsis';
 import Image from 'next/image';
-let oxsis;
 import { event } from 'utility/analytics';
 
+let oxsis;
 function _index({ address, chainId }) {
   const [state, setState] = useState({ collectionCount: 0, NFTs: [] });
   useEffect(() => {
@@ -32,24 +31,24 @@ function _index({ address, chainId }) {
         ethereum.request({ method: 'eth_requestAccounts' });
         oxsis = new Oxsis();
         const wallet = process.env.WALLET_ADDRESS;
-        if (address !== undefined && address.length > 0 && chainId === 137) {
+        // if (address !== undefined && address.length > 0 && chainId === 137) {
           let NFTCount = await oxsis.getNFTCount();
           async function getNFTs() {
-          let NFTs = await oxsis.getCollection();
-          let array = [];
-          for await (const nft of NFTs) {
-            const _nft = await nft;
-            const uri = await _nft._uri;
-            await fetch(uri)
-              .then(async (res) => await res.json())
-              .then(async (out) => {
-                out._id = _nft.tokenID;
-                await array.push(out);
-              })
-              .catch((err) => {
-                throw err;
-              });
-          }
+            let NFTs = await oxsis.getCollection();
+            let array = [];
+            for await (const nft of NFTs) {
+              const _nft = await nft;
+              const uri = await _nft._uri;
+              await fetch(uri)
+                .then(async (res) => await res.json())
+                .then(async (out) => {
+                  out._id = _nft.tokenID;
+                  await array.push(out);
+                })
+                .catch((err) => {
+                  throw err;
+                });
+            }
             return array;
           }
           setState({
@@ -57,7 +56,7 @@ function _index({ address, chainId }) {
             collectionCount: NFTCount,
             NFTs: await getNFTs(),
           });
-        }
+        // }
       } else {
         console.log('Please install MetaMask!');
       }
@@ -85,8 +84,13 @@ function _index({ address, chainId }) {
           }
         `}
       </style>
-      <a href="https://opensea.io/collection/moia-studios">Opensea</a>
-      <p>NFT in Collection: {state.collectionCount}</p>
+      <div
+        className={`container d-flex flex-column justify-content-start mx-auto`}>
+
+        <p className={`h4`}>Total NFT: {state.collectionCount}</p>
+        <a href="https://opensea.io/collection/moia-studios">Collection on Opensea</a>
+        <hr />
+      </div>
       <div
         className={`container d-flex flex-row justify-content-center mx-auto`}>
         <div
@@ -150,17 +154,17 @@ function _index({ address, chainId }) {
                     })}
                     <hr />
                     <div className={`d-flex flex-row justify-content-between`}>
-                    <a
-                      
-                      href={`token/${_id}`}>
-                      View Here
-                    </a>
-                    <a
-                      rel="noreferrer"
-                      target="_blank"
-                      href={`https://opensea.io/assets/matic/${process.env.CONTRACT_ADDRESS}/${_id}`}>
-                      View On Opensea
-                    </a>
+                      <a
+
+                        href={`token/${_id}`}>
+                        View Here
+                      </a>
+                      <a
+                        rel="noreferrer"
+                        target="_blank"
+                        href={`https://opensea.io/assets/matic/${process.env.CONTRACT_ADDRESS}/${_id}`}>
+                        View On Opensea
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -169,9 +173,9 @@ function _index({ address, chainId }) {
           ) : (
             <p>Refresh</p>
           )}
-          { }
         </div>
       </div>
+      <hr className={`container`} />
     </>
   );
 }
