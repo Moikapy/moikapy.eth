@@ -25,7 +25,7 @@
     "@ceramicstudio/idx": "^0.12.1",
     "@metamask/detect-provider": "^1.2.0",
     "@metamask/onboarding": "^1.0.1",
-    "@openzeppelin/contracts": "^4.3.0",
+    "@openzeppelin/contracts": "^4.3.1",
     "@openzeppelin/contracts-upgradeable": "^4.3.1",
     "@rarible/lazy-mint": "^0.5.3",
     "@rarible/royalties": "^0.7.2",
