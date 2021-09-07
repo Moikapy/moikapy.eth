@@ -58,6 +58,7 @@ contract ERC721_V1 is
   }
 
   mapping(uint256 => NFTItem) private idToNFTItem;
+  mapping(uint256 => address) public tokenHolder;
 
   event Mint(uint256 indexed tokenId, address indexed creator);
 
@@ -69,6 +70,36 @@ contract ERC721_V1 is
     __Ownable_init();
     _royaltiesReceiver = 0xa8D145Dd3003817dA1DC83F838Ee5088B65Acf2e;
     _royaltiesPercentage = 7;
+  }
+
+  function getTokenHolder(uint256 _tokenId) public view returns (address) {
+    // You can get values from a nested mapping
+    // even when it is not initialized
+    return tokenHolder[_tokenId];
+  }
+
+  function getTokenHolders() public view returns (address[] memory result) {
+    // You can get values from a nested mapping
+    // even when it is not initialized
+    uint256 tokenCount = _tokenIds.current();
+    result = new address[](tokenCount);
+
+    if (tokenCount == 0) {
+      return new address[](0);
+    } else {
+      for (uint256 i = 0; i < tokenCount; i++) {
+        result[i] = getTokenHolder(i);
+      }
+      return result;
+    }
+  }
+
+  function setTokenHolder(address _addr1, uint256 _tokenId) internal {
+    tokenHolder[_tokenId] = _addr1;
+  }
+
+  function removeTokenHolder(uint256 _tokenId) internal {
+    delete tokenHolder[_tokenId];
   }
 
   /**
@@ -83,6 +114,7 @@ contract ERC721_V1 is
     address to,
     uint256 tokenId
   ) internal override(ERC721Upgradeable) {
+    setTokenHolder(to, tokenId);
     super._transfer(from, to, tokenId);
   }
 

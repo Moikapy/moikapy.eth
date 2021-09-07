@@ -7,7 +7,7 @@ async function main() {
   const ERC721 = await ethers.getContractFactory("ERC721_V1");
   console.log('Upgrading ERC721...', CONTRACT_ADDRESS);
   await upgrades.upgradeProxy(CONTRACT_ADDRESS, ERC721);
-  console.log('ERC721');
+  console.log('ERC721 CONTRACT UPGRADED');
 }
 
 main().then(() => process.exit(0))
