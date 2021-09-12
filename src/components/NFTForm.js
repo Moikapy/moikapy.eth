@@ -16,7 +16,7 @@ function NFTForm({ address }) {
     attributes: [
       {
         trait_type: 'Developer Site:',
-        value: 'https://moikapy.lazynft.app',
+        value: 'https://moikapy.dev',
       },
       { trait_type: 'Mint Date:', value: new Date().toUTCString() },
     ],
@@ -37,9 +37,6 @@ function NFTForm({ address }) {
   };
   useEffect(() => {
     oxsis = new Oxsis(window.ethereum);
-    oxsis.getRoyaltiesPercentage().then((percentage) => {
-      console.log(parseInt(Number(percentage._hex), 10));
-    });
   }, []);
   return (
     <div
@@ -107,22 +104,22 @@ function NFTForm({ address }) {
               onChange={async (e) => {
                 if (typeof e.fileType !== 'undefined') {
                   e.fileType.split('/')[0] === 'audio' ||
-                  e.fileType.split('/')[0] === 'video'
+                    e.fileType.split('/')[0] === 'video'
                     ? setState({
-                        ...state,
-                        animation_url: 'ipfs://' + e.cid,
-                        fileData: '',
-                        type: e.fileType.split('/')[0],
-                        showInput: true,
-                      })
+                      ...state,
+                      animation_url: 'ipfs://' + e.cid,
+                      fileData: '',
+                      type: e.fileType.split('/')[0],
+                      showInput: true,
+                    })
                     : setState({
-                        ...state,
-                        animation_url: '',
-                        fileData: 'ipfs://' + e.cid,
-                        type: e.fileType.split('/')[0],
-                        disable: false,
-                        showInput: false,
-                      });
+                      ...state,
+                      animation_url: '',
+                      fileData: 'ipfs://' + e.cid,
+                      type: e.fileType.split('/')[0],
+                      disable: false,
+                      showInput: false,
+                    });
                 } else {
                   setState({
                     ...state,
