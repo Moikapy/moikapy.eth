@@ -6,8 +6,6 @@ import { event } from 'utility/analytics';
 
 let oxsis;
 
-
-
 function _index({ address, chainId }) {
   const [state, setState] = useState({ collectionCount: 0, NFTs: [] });
 
@@ -17,13 +15,13 @@ function _index({ address, chainId }) {
       let array = [];
       for (var i = 0; i < NFTCount; i++) {
         const _nft = await NFTs[i];
-        const tokenID = _nft.tokenID
+        const tokenID = _nft.tokenID;
         const uri = await _nft._uri;
         const res = await fetch(uri)
           .then(async (res) => await res.json())
           .then(async (out) => {
-            const obj = { ...out, _id: tokenID }
-            return obj
+            const obj = { ...out, _id: tokenID };
+            return obj;
           })
           .catch((err) => {
             throw err;
@@ -32,11 +30,11 @@ function _index({ address, chainId }) {
         setState({
           ...state,
           collectionCount: NFTCount,
-          NFTs: array
+          NFTs: array,
         });
       }
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
@@ -69,13 +67,13 @@ function _index({ address, chainId }) {
           // if (address !== undefined && address.length > 0 && chainId === 137) {
           let NFTCount = await oxsis.getNFTCount();
 
-          console.log('Loading NFTS',)
-          await getNFTs(NFTCount)
+          console.log('Loading NFTS');
+          await getNFTs(NFTCount);
         } else {
           console.log('Please install MetaMask!');
         }
       } catch (error) {
-        throw error
+        throw error;
       }
     }
 
@@ -112,8 +110,9 @@ function _index({ address, chainId }) {
       <div
         className={`container d-flex flex-row justify-content-center mx-auto`}>
         <div
-          className={`h-100 d-flex flex-row flex-wrap justify-content-between ${state.NFTs.length == 0 ? 'align-items-center' : ''
-            }`}>
+          className={`h-100 d-flex flex-row flex-wrap justify-content-between ${
+            state.NFTs.length == 0 ? 'align-items-center' : ''
+          }`}>
           {(address !== undefined && address.length == 0) || chainId !== 137 ? (
             <p className={'text-capitalize'}>
               please connect to the matic network to view collection

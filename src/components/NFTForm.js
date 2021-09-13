@@ -104,22 +104,22 @@ function NFTForm({ address }) {
               onChange={async (e) => {
                 if (typeof e.fileType !== 'undefined') {
                   e.fileType.split('/')[0] === 'audio' ||
-                    e.fileType.split('/')[0] === 'video'
+                  e.fileType.split('/')[0] === 'video'
                     ? setState({
-                      ...state,
-                      animation_url: 'ipfs://' + e.cid,
-                      fileData: '',
-                      type: e.fileType.split('/')[0],
-                      showInput: true,
-                    })
+                        ...state,
+                        animation_url: 'ipfs://' + e.cid,
+                        fileData: '',
+                        type: e.fileType.split('/')[0],
+                        showInput: true,
+                      })
                     : setState({
-                      ...state,
-                      animation_url: '',
-                      fileData: 'ipfs://' + e.cid,
-                      type: e.fileType.split('/')[0],
-                      disable: false,
-                      showInput: false,
-                    });
+                        ...state,
+                        animation_url: '',
+                        fileData: 'ipfs://' + e.cid,
+                        type: e.fileType.split('/')[0],
+                        disable: false,
+                        showInput: false,
+                      });
                 } else {
                   setState({
                     ...state,
