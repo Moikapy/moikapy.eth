@@ -12,7 +12,8 @@ export default function Dropdown({ children, dropdownStyle }) {
       </style>
       <div
         className={`moi-dropdown border border-dark card p-1 my-1 ${dropdownStyle}`}
-        onClick={() => setState({ ...state, show: !state.show })}>
+        onClick={() => setState({ ...state, show: !state.show })}
+      >
         {!state.show ? <div>Click To Preview Metadata</div> : <> {children}</>}
       </div>
     </>

@@ -8,7 +8,8 @@ export default function Button({
     <button
       onClick={() => onPress()}
       className={`${buttonStyle} btn`}
-      disabled={disabled}>
+      disabled={disabled}
+    >
       {children}
     </button>
   );

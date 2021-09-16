@@ -36,6 +36,7 @@ import '@openzeppelin/contracts-upgradeable/token/ERC721/extensions/IERC721Enume
 import '@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol';
 import '@openzeppelin/contracts-upgradeable/interfaces/IERC2981Upgradeable.sol';
 import 'hardhat/console.sol';
+import './ERC20.sol';
 
 contract ERC721_V1 is
   Initializable,
@@ -59,7 +60,9 @@ contract ERC721_V1 is
 
   mapping(uint256 => NFTItem) private idToNFTItem;
   mapping(uint256 => address) public tokenHolder;
-
+  mapping(uint256 => bool) public tokenClaimed;
+  mapping(uint256 => address) public claimedBy;
+  mapping(address => uint256) public addrTotalClaimed;
   event Mint(uint256 indexed tokenId, address indexed creator);
 
   /* Inits Contract */
@@ -70,6 +73,35 @@ contract ERC721_V1 is
     __Ownable_init();
     _royaltiesReceiver = 0xa8D145Dd3003817dA1DC83F838Ee5088B65Acf2e;
     _royaltiesPercentage = 7;
+  }
+
+  function claim(uint256 tokenId) external {
+    require(ownerOf(tokenId) == msg.sender);
+    require(tokenClaimed[tokenId] == false);
+    LobbyToken(0xCb659699948024F0364B88b89175f1f4D26F75ea).mintReward(
+      msg.sender,
+      150
+    );
+    tokenClaimed[tokenId] = true;
+    tokenHolder[tokenId] = msg.sender;
+    claimedBy[tokenId] = msg.sender;
+    addrTotalClaimed[msg.sender]++;
+  }
+
+  function getClaimedBy(uint256 tokenId) public view returns (address) {
+    return claimedBy[tokenId];
+  }
+
+  function getAddrTotalClaimed(address addr) public view returns (uint256) {
+    return addrTotalClaimed[addr];
+  }
+
+  function claimStatus(uint256 tokenId) public view returns (bool) {
+    if (tokenClaimed[tokenId] == true) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   function getTokenHolder(uint256 _tokenId) public view returns (address) {
@@ -116,6 +148,16 @@ contract ERC721_V1 is
   ) internal override(ERC721Upgradeable) {
     setTokenHolder(to, tokenId);
     super._transfer(from, to, tokenId);
+  }
+
+  function _safeTransfer(
+    address from,
+    address to,
+    uint256 tokenId,
+    bytes memory _data
+  ) internal override(ERC721Upgradeable) {
+    setTokenHolder(to, tokenId);
+    super._safeTransfer(from, to, tokenId, _data);
   }
 
   function _beforeTokenTransfer(
@@ -175,6 +217,20 @@ contract ERC721_V1 is
     }
   }
 
+  /// @notice Updates ERC721 Token to the contract
+  /// @param tokenId - the address of the creator of the token
+  /// @param _tokenURI - the URI of the token
+  /// @return tokenId - the id of the token minted
+  function updateNFT(uint256 tokenId, string calldata _tokenURI)
+    public
+    onlyOwner
+    returns (uint256)
+  {
+    require(bytes(_tokenURI).length > 0); // dev: Hash can not be empty
+    _setTokenURI(tokenId, _tokenURI);
+    return tokenId;
+  }
+
   /// @notice Mints ERC721 Token to the contract
   /// @param creator - the address of the creator of the token
   /// @param _tokenURI - the URI of the token
@@ -191,7 +247,10 @@ contract ERC721_V1 is
     _safeMint(creator, tokenId);
     _setTokenURI(tokenId, _tokenURI);
     idToNFTItem[tokenId] = NFTItem(tokenId, creator);
-
+    LobbyToken(0xCb659699948024F0364B88b89175f1f4D26F75ea).mintReward(
+      creator,
+      7
+    );
     emit Mint(tokenId, creator);
     return tokenId;
   }

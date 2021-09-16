@@ -158,19 +158,19 @@ export const startCore = (props) => async (dispatch, getState) => {
 
     if (window.ethereum !== undefined) {
       await watchChain();
-      let address = await web3.eth.getAccounts();
-      address = address[0];
-      if (
-        address !== null &&
-        address !== undefined &&
-        (await address) !== undefined
-      ) {
-        await dispatch(getBalance(await address));
-        // await dispatch(connectID());
-      }
-      await ethereum.on('accountsChanged', async (newAccounts) => {
-        await dispatch(setAddress(newAccounts[0]));
-      });
+      //   let address = await web3.eth.getAccounts();
+      //   address = address[0];
+      //   if (
+      //     address !== null &&
+      //     address !== undefined &&
+      //     (await address) !== undefined
+      //   ) {
+      //     // await dispatch(getBalance(await address));
+      //     // await dispatch(connectID());
+      //   }
+      //   // await ethereum.on('accountsChanged', async (newAccounts) => {
+      //   //   await dispatch(setAddress(newAccounts[0]));
+      //   // });
     }
   } catch (error) {
     throw error;

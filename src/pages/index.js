@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import Oxsis from 'lib/oxsis';
 import Image from 'next/image';
+import MediaViewer from 'components/media-viewer';
 import { event } from 'utility/analytics';
 
 let oxsis;
@@ -20,13 +21,18 @@ function _index({ address, chainId }) {
         const res = await fetch(uri)
           .then(async (res) => await res.json())
           .then(async (out) => {
-            const obj = { ...out, _id: tokenID };
+            const obj = {
+              ...out,
+              _id: tokenID,
+              tokens_claimed: await oxsis.getClaimStatus(tokenID),
+            };
             return obj;
           })
           .catch((err) => {
             throw err;
           });
         array.push(res);
+
         setState({
           ...state,
           collectionCount: NFTCount,
@@ -63,8 +69,9 @@ function _index({ address, chainId }) {
           // Access the decentralized web!
           ethereum.request({ method: 'eth_requestAccounts' });
           oxsis = new Oxsis(ethereum);
+          console.log('Token Holders', await oxsis.getTokenHolders());
+
           const wallet = process.env.WALLET_ADDRESS;
-          // if (address !== undefined && address.length > 0 && chainId === 137) {
           let NFTCount = await oxsis.getNFTCount();
 
           console.log('Loading NFTS');
@@ -100,7 +107,8 @@ function _index({ address, chainId }) {
         `}
       </style>
       <div
-        className={`container d-flex flex-column justify-content-start mx-auto`}>
+        className={`container d-flex flex-column justify-content-start mx-auto`}
+      >
         <p className={`h4`}>Total NFT: {state.collectionCount}</p>
         <a href="https://opensea.io/collection/moia-studios">
           Collection on Opensea
@@ -108,11 +116,13 @@ function _index({ address, chainId }) {
         <hr />
       </div>
       <div
-        className={`container d-flex flex-row justify-content-center mx-auto`}>
+        className={`container d-flex flex-row justify-content-center mx-auto`}
+      >
         <div
           className={`h-100 d-flex flex-row flex-wrap justify-content-between ${
             state.NFTs.length == 0 ? 'align-items-center' : ''
-          }`}>
+          }`}
+        >
           {(address !== undefined && address.length == 0) || chainId !== 137 ? (
             <p className={'text-capitalize'}>
               please connect to the matic network to view collection
@@ -138,19 +148,24 @@ function _index({ address, chainId }) {
                   key={key}
                   className={
                     'nft-card card p-3 m-1 d-flex flex-column justify-content-between h-100'
-                  }>
+                  }
+                >
                   ID:{_id}
                   <hr />
                   <div className={`h-100 w-100`}>
-                    {
-                      <Image
-                        height={'100%'}
-                        width={'100%'}
-                        layout="responsive"
-                        title={name + '; ' + description}
-                        src={image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
-                      />
-                    }
+                    {attributes.map(({ trait_type, value }, key) => {
+                      if (trait_type === 'File Type:') {
+                        return (
+                          <MediaViewer
+                            mimeType={'image/png'}
+                            displayUri={image}
+                            artifactUri={image}
+                            type={'ipfs'}
+                          />
+                        );
+                      }
+                    })}
+
                     <hr />
                     <p className={`m-0`}>{name}</p>
                     <hr />
@@ -175,7 +190,8 @@ function _index({ address, chainId }) {
                       <a
                         rel="noreferrer"
                         target="_blank"
-                        href={`https://opensea.io/assets/matic/${process.env.CONTRACT_ADDRESS}/${_id}`}>
+                        href={`https://opensea.io/assets/matic/${process.env.CONTRACT_ADDRESS}/${_id}`}
+                      >
                         View On Opensea
                       </a>
                     </div>

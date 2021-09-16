@@ -30,6 +30,14 @@ const nextConfig = {
         source: '/Token',
         destination: '/token/1',
       },
+      {
+        source: '/dashboard',
+        destination: '/Dashboard',
+      },
+      {
+        source: '/dashboard/*',
+        destination: '/Dashboard/*',
+      },
     ]
   },
   images: {
@@ -41,12 +49,12 @@ const nextConfig = {
     RAREPRESS: process.env.RAREPRESS,
     RAREPRESS_VERSION: process.env.RAREPRESS_VERSION,
     WALLET_ADDRESS: process.env.WALLET_ADDRESS,
-    NEXT_PUBLIC_GOOGLE_ANALYTICS:process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS,
-    ADSENSE_KEY:process.env.ADSENSE_KEY,
+    NEXT_PUBLIC_GOOGLE_ANALYTICS: process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS,
+    ADSENSE_KEY: process.env.ADSENSE_KEY,
     LAZY_NFT_KEY: process.env.LAZY_NFT_KEY,
     SECRETKEY: process.env.SECRETKEY,
-    ETHERSCAN_API:process.env.ETHERSCAN_API,
-    NOMICS_KEYS:process.env.NOMICS_KEYS,
+    ETHERSCAN_API: process.env.ETHERSCAN_API,
+    NOMICS_KEYS: process.env.NOMICS_KEYS,
     API_URL: process.env.API_URL,
     PRIVATE_KEY: process.env.PRIVATE_KEY,
     CONTRACT_ADDRESS: process.env.CONTRACT_ADDRESS,

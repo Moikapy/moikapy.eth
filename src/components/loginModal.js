@@ -26,7 +26,8 @@ function LoginModal({
                 console.log(error);
               }
             }}
-            buttonStyle={'border border-dark'}>
+            buttonStyle={'border border-dark'}
+          >
             Connect With Metamask or Trust
           </Button>
         </div>

@@ -6,6 +6,7 @@ import { _metadata, _metadataTypes } from 'lib/metadataSchema.ts';
 import { event } from 'utility/analytics';
 import FormInputs from './FormInputs';
 import Oxsis from 'lib/oxsis';
+import MediaViewer from './media-viewer';
 import detectEthereumProvider from '@metamask/detect-provider';
 let web3, oxsis;
 
@@ -42,7 +43,8 @@ function NFTForm({ address }) {
     <div
       className={
         'nft-mint-form d-flex flex-column m-1 pb-5 mx-auto container-fluid h-auto'
-      }>
+      }
+    >
       <style global jsx>
         {`
           .file-widget {
@@ -79,7 +81,8 @@ function NFTForm({ address }) {
         {/* TOP SECTION */}
         <div className="d-flex flex-xl-row flex-column flex-wrap justify-content-around mx-2 w-100">
           <div
-            className={`col-xl-6 m-3 p-2 border border-dark d-inline-flex flex-column`}>
+            className={`col-xl-6 m-3 p-2 border border-dark d-inline-flex flex-column`}
+          >
             <h4>NFT INFO</h4>
             Closed To The Public
             <hr />
@@ -97,39 +100,53 @@ function NFTForm({ address }) {
           </div>
 
           <div
-            className={`col-xl-6 m-3 p-2 border border-dark d-inline-flex flex-column`}>
+            className={`col-xl-6 m-3 p-2 border border-dark d-inline-flex flex-column`}
+          >
             <NFTInput
               id={'nft-input'}
               label={'File:'}
               onChange={async (e) => {
-                if (typeof e.fileType !== 'undefined') {
-                  e.fileType.split('/')[0] === 'audio' ||
-                  e.fileType.split('/')[0] === 'video'
-                    ? setState({
-                        ...state,
-                        animation_url: 'ipfs://' + e.cid,
-                        fileData: '',
-                        type: e.fileType.split('/')[0],
-                        showInput: true,
-                      })
-                    : setState({
-                        ...state,
-                        animation_url: '',
-                        fileData: 'ipfs://' + e.cid,
-                        type: e.fileType.split('/')[0],
-                        disable: false,
-                        showInput: false,
-                      });
-                } else {
-                  setState({
-                    ...state,
-                    animation_url: '',
-                    fileData: '',
-                    type: '',
-                    disable: true,
-                    showInput: false,
-                  });
-                }
+                console.log('ew', e.fileType);
+                // if (typeof e.fileType !== 'undefined') {
+                //   e.fileType.split('/')[0] === 'audio' ||
+                //     e.fileType.split('/')[0] === 'video'
+                //     ? setState({
+                //       ...state,
+                //       animation_url: 'https://ipfs.io/ipfs/' + e.cid,
+                //       fileData: '',
+                //       type: e.fileType.split('/')[0],
+                //       showInput: true,
+                //       animationMemeType: e.fileType
+                //     })
+                //     : setState({
+                //       ...state,
+                //       animation_url: '',
+                //       fileData: 'https://ipfs.io/ipfs/' + e.cid,
+                //       type: e.fileType.split('/')[0],
+                //       disable: false,
+                //       showInput: false,
+                //       memeType: e.fileType
+                //     })
+                // } else {
+                //   setState({
+                //     ...state,
+                //     animation_url: '',
+                //     fileData: '',
+                //     type: '',
+                //     disable: true,
+                //     showInput: false,
+                //   });
+                // }
+                setState({
+                  ...state,
+                  fileData: 'https://ipfs.io/ipfs/' + e.cid,
+                  type: e.fileType.split('/')[0],
+                  showInput: true,
+                  memeType:
+                    e.fileType == 'application/zip'
+                      ? 'application/zip'
+                      : e.fileType,
+                });
               }}
             />
             <br />
@@ -142,9 +159,10 @@ function NFTForm({ address }) {
                   if (typeof e.fileType !== 'undefined') {
                     setState({
                       ...state,
-                      fileData: 'ipfs://' + e.cid,
+                      fileData: 'https://ipfs.io/ipfs/' + e.cid,
                       disable: false,
                       token: null,
+                      memeType: e.fileType,
                     });
                   } else {
                     setState({
@@ -159,45 +177,36 @@ function NFTForm({ address }) {
             )}
             <hr />
             <div className={`d-flex flex-column w-auto`}>
-              {state.fileData !== undefined && state.fileData.length > 0 && (
-                <>
-                  <div className={'nft-img-preview mx-auto w-auto'}>
-                    <img
-                      alt="Lazy NFT App Image"
-                      className={'w-100'}
-                      src={
-                        'https://ipfs.io/ipfs/' +
-                        state.fileData.replace('ipfs://', '')
-                      }
-                    />
-                  </div>
-                  <hr />
-                </>
-              )}
-              {state.type.split('/')[0] === 'video' && (
-                <div className={'nft-video-preview mx-auto w-auto'}>
-                  <video
-                    controls
-                    className={''}
-                    src={
-                      'https://ipfs.io/ipfs/' +
-                      state.fileData.replace('ipfs://', '')
-                    }
+              {console.log(state.type)}
+              <>
+                <div className={'nft-img-preview mx-auto w-auto'}>
+                  <MediaViewer
+                    mimeType={state.memeType}
+                    displayUri={state.fileData}
+                    artifactUri={state.fileData}
+                    type={'ipfs'}
                   />
                 </div>
-              )}
-              {state.type.split('/')[0] === 'audio' && (
-                <div className={'nft-audio-preview'}>
-                  <audio
-                    controls
-                    className={'w-100'}
-                    src={
-                      'https://ipfs.io/ipfs/' +
-                      state.fileData.replace('ipfs://', '')
-                    }
-                  />
-                </div>
-              )}
+                <hr />
+              </>
+              {/* {state.fileData !== undefined && state.fileData.length > 0 && (
+              )} */}
+
+              {state.animation_url !== undefined &&
+                state.animation_url.length > 0 && (
+                  <>
+                    <div className={'nft-img-preview mx-auto w-auto'}>
+                      <MediaViewer
+                        mimeType={state.animationMemeType}
+                        displayUri={state.animation_url}
+                        artifactUri={state.animation_url}
+                        type={'ipfs'}
+                      />
+                    </div>
+                    <hr />
+                  </>
+                )}
+
               <Button
                 disabled={
                   state.fileData === undefined && state.name.length === 0
@@ -241,7 +250,8 @@ function NFTForm({ address }) {
                     disable: !state.disable,
                     isLoading: false,
                   });
-                }}>
+                }}
+              >
                 Mint
               </Button>
             </div>
@@ -249,7 +259,8 @@ function NFTForm({ address }) {
         </div>
         {state.isLoading && (
           <div
-            className={`w-100 h-100 loader d-flex flex-column justify-content-center align-items-center`}>
+            className={`w-100 h-100 loader d-flex flex-column justify-content-center align-items-center`}
+          >
             <div className="mx-auto text-uppercase mb-3">
               Minting NFT
               <hr />

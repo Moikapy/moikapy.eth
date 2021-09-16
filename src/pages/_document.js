@@ -37,7 +37,8 @@ class MyDocument extends Document {
           <script
             type="text/javascript"
             src="//www.privacypolicies.com/public/cookie-consent/4.0.0/cookie-consent.js"
-            charset="UTF-8"></script>
+            charset="UTF-8"
+          ></script>
           <script
             type="text/javascript"
             charset="UTF-8"
@@ -59,7 +60,8 @@ class MyDocument extends Document {
             async
             data-ad-client={`ca-pub-${process.env.ADSENSE_KEY}`}
             src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js`}
-            crossOrigin="anonymous"></script>
+            crossOrigin="anonymous"
+          ></script>
           {/*// eslint-disable-line no-console*/}
           <script
             type="text/plain"
@@ -79,7 +81,8 @@ class MyDocument extends Document {
             Cookie Consent by{' '}
             <a
               href="https://www.PrivacyPolicies.com/cookie-consent/"
-              rel="nofollow noopener">
+              rel="nofollow noopener"
+            >
               PrivacyPolicies.com
             </a>
           </noscript>

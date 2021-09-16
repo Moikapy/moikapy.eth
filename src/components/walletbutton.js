@@ -22,7 +22,8 @@ function WalletButton({ address = '', onPress = () => {} }) {
           className={`wallet-button-address hover-blackflame d-flex flex-column align-items-center justify-content-center px-3 h-100 w-100 cursor-point`}
           onClick={() => {
             setShow(!show);
-          }}>
+          }}
+        >
           {truncateAddress(address)}
         </div>
       ) : (
@@ -30,7 +31,8 @@ function WalletButton({ address = '', onPress = () => {} }) {
           className={`wallet-button-address hover-blackflame d-flex flex-column align-items-center justify-content-center px-3 h-100 w-100 cursor-point`}
           onClick={() => {
             onPress();
-          }}>
+          }}
+        >
           CONNECT
         </div>
       )}

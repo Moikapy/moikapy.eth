@@ -17,6 +17,7 @@
 
 # misc
 .DS_Store
+*/DS_Store
 *.pem
 
 # debug
@@ -41,3 +42,15 @@ wallets.json
 
 
 cache/
+
+public/sw.js
+
+public/workbox-1ffba242.js
+
+public/workbox-1ffba242.js.map
+
+public/workbox-202dc43a.js
+
+public/workbox-202dc43a.js.map
+
+.openzeppelin/

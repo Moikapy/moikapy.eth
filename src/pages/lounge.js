@@ -74,7 +74,8 @@ function _index({ address, chainId }) {
     <>
       <style jsx>{``}</style>
       <div
-        className={`container h-100 d-flex flex-row justify-content-center align-items-center text-uppercase`}>
+        className={`container h-100 d-flex flex-row justify-content-center align-items-center text-uppercase`}
+      >
         The Lounge COMING SOON
       </div>
     </>

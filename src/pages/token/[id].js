@@ -92,12 +92,14 @@ function _index({ address, chainId }) {
       <a href="https://opensea.io/collection/moia-studios">Opensea</a>
       <p>NFT in Collection: {state.collectionCount}</p>
       <div
-        className={`container w-100 h-100 d-flex flex-row justify-content-center`}>
+        className={`container w-100 h-100 d-flex flex-row justify-content-center`}
+      >
         {console.log(state.NFTs)}
         <div
           className={`h-100 w-100 d-flex flex-row flex-wrap justify-content-center ${
             state.NFTs.length == 0 ? 'align-items-center' : ''
-          }`}>
+          }`}
+        >
           {(address !== undefined && address.length == 0) || chainId !== 137 ? (
             <p className={'text-capitalize'}>
               please connect to the matic network to view collection
@@ -108,7 +110,8 @@ function _index({ address, chainId }) {
               <div
                 className={
                   'nft-card card p-3 m-1 d-flex flex-column justify-content-between'
-                }>
+                }
+              >
                 ID:{state.NFTs[0]._id}
                 <hr />
                 <div className={`h-100 w-100`}>
@@ -124,6 +127,7 @@ function _index({ address, chainId }) {
                         'ipfs://',
                         'https://ipfs.io/ipfs/'
                       )}
+                      alt={state.NFTs[0].name + '; ' + state.NFTs[0].description}
                     />
                   }
                   <hr />
@@ -152,7 +156,8 @@ function _index({ address, chainId }) {
                   <a
                     rel="noreferrer"
                     target="_blank"
-                    href={`https://opensea.io/assets/matic/${process.env.CONTRACT_ADDRESS}/${state.NFTs[0]._id}`}>
+                    href={`https://opensea.io/assets/matic/${process.env.CONTRACT_ADDRESS}/${state.NFTs[0]._id}`}
+                  >
                     View On Opensea
                   </a>
                 </div>

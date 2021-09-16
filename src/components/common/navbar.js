@@ -70,7 +70,8 @@ function Navbar({
   }, [address]);
   return (
     <div
-      className={`navbar d-flex flex-row justify-content-between align-items-center ps-3 py-0 ${navbarContainerStyle}`}>
+      className={`navbar d-flex flex-row justify-content-between align-items-center ps-3 py-0 ${navbarContainerStyle}`}
+    >
       <style global jsx>{`
         .brand-text {
           font-size: 1.5rem;
@@ -95,35 +96,38 @@ function Navbar({
       `}</style>
       <span
         onClick={() => router.push('/')}
-        className={`brand-text cursor-point h-100 d-flex flex-row align-items-center py-2 ${brandTextStyle}`}>
+        className={`brand-text cursor-point h-100 d-flex flex-row align-items-center py-2 ${brandTextStyle}`}
+      >
         {brandText}
       </span>
       <div className={`d-none d-sm-flex flex-row`}>
         {
           <Button
-            buttonStyle={`oasis-button py-0 ${
+            buttonStyle={`oasis-button py-0 mx-1 ${
               state.NFTs.length == 0
                 ? 'btn-outline-danger'
                 : 'btn-outline-success'
             }`}
-            onPress={() => state.NFTs.length !== 0 && router.push('/lounge')}>
+            onPress={() => state.NFTs.length !== 0 && router.push('/lounge')}
+          >
             <span
               title={
                 state.NFTs.length == 0
                   ? 'For Token Holders'
                   : 'Welcome Token Holder'
-              }>
+              }
+            >
               The Lounge
             </span>
           </Button>
         }
-        {address !== undefined && address.length > 0 && (
+        {/* {address !== undefined && address.length > 0 && (
           <Button
             buttonStyle={`create-button py-0`}
             onPress={() => onClickCreate()}>
             Mint
           </Button>
-        )}
+        )} */}
         <WalletButton onPress={onClick} address={address} />
       </div>
     </div>

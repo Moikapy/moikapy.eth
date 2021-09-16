@@ -8,6 +8,7 @@ import metrics from '../metrics';
 import { pageview, event } from '../utility/analytics';
 import Layout from '../components/common/layout';
 import { useRouter } from 'next/router';
+
 /**
  * Handles the Vitals and Metrics of the Webapp
  * @param {Object} metric

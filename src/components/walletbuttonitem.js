@@ -10,7 +10,8 @@ function WalletButtonItem({
   return (
     <div
       className={`wallet-button-item d-flex flex-row justify-content-end border-bottom border-dark cursor-point ${walletItemStyle}`}
-      onClick={() => onPress()}>
+      onClick={() => onPress()}
+    >
       {text}
     </div>
   );

@@ -45,7 +45,8 @@ function Layout({ children, layoutContainerStyle = '', startCore }) {
           <div className="text-center w-100 p-3 mx-auto">
             Contract Address:{' '}
             <a
-              href={`https://polygonscan.com/address/${process.env.CONTRACT_ADDRESS}`}>
+              href={`https://polygonscan.com/address/${process.env.CONTRACT_ADDRESS}`}
+            >
               {process.env.CONTRACT_ADDRESS}
             </a>
           </div>
