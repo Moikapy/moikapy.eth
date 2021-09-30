@@ -23,7 +23,6 @@ export const Container = ({
   nofullscreen = false,
 }) => {
   const context = useContext(Context);
-  console.log(context);
   const domElement = useRef();
 
   const { ref, inView } = useInView({

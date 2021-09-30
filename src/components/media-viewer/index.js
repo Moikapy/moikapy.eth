@@ -83,6 +83,7 @@ function MediaViewer({
   preview = false,
 
   displayView,
+  imageStyle
 }) {
   let parsedArtifactUri;
   let parsedDisplayUri;
@@ -107,6 +108,7 @@ function MediaViewer({
             onDetailView={interactive || mimeType === MIMETYPE.GIF}
             preview={preview}
             displayView={displayView}
+            imageStyle={imageStyle}
           />
         </Container>
       );

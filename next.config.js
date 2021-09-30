@@ -34,10 +34,7 @@ const nextConfig = {
         source: '/dashboard',
         destination: '/Dashboard',
       },
-      {
-        source: '/dashboard/*',
-        destination: '/Dashboard/*',
-      },
+
     ]
   },
   images: {
@@ -59,6 +56,8 @@ const nextConfig = {
     PRIVATE_KEY: process.env.PRIVATE_KEY,
     CONTRACT_ADDRESS: process.env.CONTRACT_ADDRESS,
     POLYGON_KEY: process.env.POLYGON_KEY,
+    DEFENDER_KEY: process.env.DEFENDER_KEY,
+    DEFENDER_PRIV: process.env.DEFENDER_PRIV
   },
 };
 module.exports = withPWA(nextConfig);

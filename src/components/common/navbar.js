@@ -41,26 +41,6 @@ function Navbar({
         // Access the decentralized web!
         ethereum.request({ method: 'eth_requestAccounts' });
         let oxsis = new Oxsis();
-        if (address !== undefined && address.length > 0 && chainId === 137) {
-          let NFTs = await oxsis.getNFTs(address);
-          let array = [];
-          for await (const nft of NFTs) {
-            const _nft = await nft;
-            await fetch(_nft._uri)
-              .then(async (res) => await res.json())
-              .then(async (out) => {
-                out._id = _nft.tokenID;
-                await array.push(out);
-              })
-              .catch((err) => {
-                throw err;
-              });
-          }
-          setState({
-            ...state,
-            NFTs: array,
-          });
-        }
       } else {
         console.log('Please install MetaMask!');
       }

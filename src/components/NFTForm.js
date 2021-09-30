@@ -1,4 +1,6 @@
+
 import { useEffect, useState } from 'react';
+import Web3 from 'web3';
 import NFTInput from './NFTInput';
 import Button from './common/button';
 import { connect } from 'react-redux';
@@ -8,9 +10,11 @@ import FormInputs from './FormInputs';
 import Oxsis from 'lib/oxsis';
 import MediaViewer from './media-viewer';
 import detectEthereumProvider from '@metamask/detect-provider';
+import Input from './common/input';
 let web3, oxsis;
 
 function NFTForm({ address }) {
+  const [supply, setSupply] = useState(1);
   const [state, setState] = useState({
     ..._metadata,
     type: '',
@@ -37,6 +41,9 @@ function NFTForm({ address }) {
     }
   };
   useEffect(() => {
+    Object.defineProperty(window, 'crypto', {
+
+    });
     oxsis = new Oxsis(window.ethereum);
   }, []);
   return (
@@ -97,6 +104,34 @@ function NFTForm({ address }) {
                 style={`w-100`}
               />
             ))}
+            <>
+              <Input
+                id={10}
+                label={'NFT Supply'}
+                type={'number'}
+                value={supply}
+                placeholder={
+                  supply
+                }
+                onChange={(e) => setSupply(e.target.value)}
+                className={`w-100 col-6`}
+              />
+              <hr />
+            </>
+            <>
+              <Input
+                id={11}
+                label={'Fixed Supply'}
+                type={'checkbox'}
+                placeholder={
+                  'Fixed Supply'
+                }
+                onChange={(e) => {console.log(e.target.value=='on'?true:false);setSupply(e.target.value)}}
+                className={`w-100 col-6`}
+              />
+              <hr />
+
+            </>
           </div>
 
           <div
@@ -107,39 +142,11 @@ function NFTForm({ address }) {
               label={'File:'}
               onChange={async (e) => {
                 console.log('ew', e.fileType);
-                // if (typeof e.fileType !== 'undefined') {
-                //   e.fileType.split('/')[0] === 'audio' ||
-                //     e.fileType.split('/')[0] === 'video'
-                //     ? setState({
-                //       ...state,
-                //       animation_url: 'https://ipfs.io/ipfs/' + e.cid,
-                //       fileData: '',
-                //       type: e.fileType.split('/')[0],
-                //       showInput: true,
-                //       animationMemeType: e.fileType
-                //     })
-                //     : setState({
-                //       ...state,
-                //       animation_url: '',
-                //       fileData: 'https://ipfs.io/ipfs/' + e.cid,
-                //       type: e.fileType.split('/')[0],
-                //       disable: false,
-                //       showInput: false,
-                //       memeType: e.fileType
-                //     })
-                // } else {
-                //   setState({
-                //     ...state,
-                //     animation_url: '',
-                //     fileData: '',
-                //     type: '',
-                //     disable: true,
-                //     showInput: false,
-                //   });
-                // }
+
                 setState({
                   ...state,
                   fileData: 'https://ipfs.io/ipfs/' + e.cid,
+                  animation_url: 'https://ipfs.io/ipfs/' + e.cid,
                   type: e.fileType.split('/')[0],
                   showInput: true,
                   memeType:
@@ -177,27 +184,14 @@ function NFTForm({ address }) {
             )}
             <hr />
             <div className={`d-flex flex-column w-auto`}>
-              {console.log(state.type)}
-              <>
-                <div className={'nft-img-preview mx-auto w-auto'}>
-                  <MediaViewer
-                    mimeType={state.memeType}
-                    displayUri={state.fileData}
-                    artifactUri={state.fileData}
-                    type={'ipfs'}
-                  />
-                </div>
-                <hr />
-              </>
-              {/* {state.fileData !== undefined && state.fileData.length > 0 && (
-              )} */}
+              
 
               {state.animation_url !== undefined &&
                 state.animation_url.length > 0 && (
                   <>
                     <div className={'nft-img-preview mx-auto w-auto'}>
                       <MediaViewer
-                        mimeType={state.animationMemeType}
+                        mimeType={state.memeType}
                         displayUri={state.animation_url}
                         artifactUri={state.animation_url}
                         type={'ipfs'}
@@ -235,7 +229,9 @@ function NFTForm({ address }) {
                   });
 
                   const _tkn = await Oxsis.storeFileAsBlob(json);
-                  await oxsis.mintNFT(address, _tkn);
+                  await oxsis.mintNFT(address, _tkn, supply);
+
+
                   event({
                     action: 'mint',
                     params: {

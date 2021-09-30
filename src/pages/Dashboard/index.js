@@ -41,8 +41,8 @@ function _index({ address, chainId }) {
             address.toLowerCase() == process.env.WALLET_ADDRESS
           );
 
-          address.toLowerCase() !== process.env.WALLET_ADDRESS &&
-            router.push('/');
+          // address.toLowerCase() !== process.env.WALLET_ADDRESS &&
+          //   router.push('/');
         } else {
           console.log('Please install MetaMask!');
         }

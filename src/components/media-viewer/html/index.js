@@ -25,7 +25,6 @@ export const HTMLComponent = (props) => {
     preview,
     displayView,
   } = props;
-  console.log(props);
   const context = useContext(Context);
 
   let _creator_ = false;
@@ -55,7 +54,7 @@ export const HTMLComponent = (props) => {
   const unpackZipFiles = async () => {
     unpacking.current = true;
 
-    const buffer = dataRUIToBuffer(previewUri);
+    const buffer = dataRUIToBuffer(artifactUri);
     const filesArr = await prepareFilesFromZIP(buffer);
     const files = {};
     filesArr.forEach((f) => {
@@ -76,87 +75,47 @@ export const HTMLComponent = (props) => {
     unpacking.current = false;
   };
 
-  if (preview && !unpackedFiles.current && !unpacking.current) {
-    unpackZipFiles();
-  }
+  // useEffect(() => {
+   
+  //   const handler = async (event) => {
+  //     unpackZipFiles();
 
-  useEffect(() => {
-    const handler = async (event) => {
-      if (event.data !== uid) {
-        return;
-      }
+  //     iframeRef.current.contentWindow.postMessage(
+  //       {
+  //         target: 'hicetnunc-html-preview',
+  //         data: unpackedFiles.current,
+  //       },
+  //       '*'
+  //     );
+  //   };
 
-      iframeRef.current.contentWindow.postMessage(
-        {
-          target: 'hicetnunc-html-preview',
-          data: unpackedFiles.current,
-        },
-        '*'
-      );
-    };
+  //   window.addEventListener('message', handler);
 
-    window.addEventListener('message', handler);
-
-    return () => window.removeEventListener('message', handler);
-  }, [previewUri]);
+  //   return () => window.removeEventListener('message', handler);
+  // }, [artifactUri]);
 
   const classes = classnames({
     [styles.container]: true,
-    [styles.interactive]: false,
+    [styles.interactive]: true,
   });
 
-  if (preview) {
-    // creator is viewer in preview
-    _creator_ = _viewer_;
+  // if (true) {
+  // creator is viewer in preview
+  _creator_ = _viewer_;
 
-    if (validHTML) {
-      return (
-        <div className={classes}>
-          <iframe
-            ref={iframeRef}
-            title="html-zip-embed"
-            src={`https://hicetnunc2000.github.io/hicetnunc/gh-pages/html-preview/?uid=${uid}&creator=${_creator_}&viewer=${_viewer_}&objkt=${_objectId_}`}
-            sandbox="allow-scripts allow-same-origin allow-modals"
-            allow="accelerometer; camera; gyroscope; microphone; xr-spatial-tracking;"
-          />
-        </div>
-      );
-    } else if (validHTML === false) {
-      return (
-        <div className={styles.error}>Preview Error: {validationError}</div>
-      );
-    }
-  }
+  // }
 
-  if (!displayView) {
-    try {
-      return (
-        <div>
-          <iframe
-            className={styles.html + ' zip-embed'}
-            title="html-embed"
-            src={`${artifactUri}/?creator=${_creator_}&viewer=${_viewer_}&objkt=${_objectId_}`}
-            sandbox="allow-scripts allow-same-origin"
-            allow="accelerometer; camera; gyroscope; microphone; xr-spatial-tracking;"
-          />
-        </div>
-      );
-    } catch (err) {
-      return undefined;
-    }
-  } else {
-    console.log('displayView', displayView);
-    return (
-      <div>
-        <iframe
-          className={styles.html}
-          title="html-embed"
-          src={`${artifactUri}/?creator=${_creator_}&viewer=${_viewer_}&objkt=${_objectId_}`}
-          // /?creator=${_creator_}&viewer=${_viewer_}&objkt=${_objectId_}
-          sandbox="allow-scripts allow-same-origin"
-          allow="accelerometer; camera; gyroscope; microphone; xr-spatial-tracking;"
-        />
-      </div>
-    );
-  }
+  return (
+    <div>
+      <iframe
+        allow-downloads="true"
+        className={styles.html}
+        title="html-embed"
+        src={`${artifactUri}`}
+        // /?creator=${_creator_}&viewer=${_viewer_}&objkt=${_objectId_}
+        sandbox="allow-scripts allow-same-origin allow-modals"
+        allow="accelerometer; camera; gyroscope; microphone; xr-spatial-tracking;"
+      />
+    </div>
+  );
 };

@@ -69,8 +69,6 @@ function _index({ address, chainId }) {
           // Access the decentralized web!
           ethereum.request({ method: 'eth_requestAccounts' });
           oxsis = new Oxsis(ethereum);
-          console.log('Token Holders', await oxsis.getTokenHolders());
-
           const wallet = process.env.WALLET_ADDRESS;
           let NFTCount = await oxsis.getNFTCount();
 

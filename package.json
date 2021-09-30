@@ -15,7 +15,9 @@
     "deploy": "npx hardhat run --network matic scripts/deploy.js",
     "deploy:erc20": "npx hardhat run --network matic scripts/deployERC20.js",
     "upgrade-contract": "npx hardhat run --network matic scripts/upgrade.js",
-    "upgrade-contract:erc20": "npx hardhat run --network matic scripts/upgradeERC20.js"
+    "upgrade-contract:erc20": "npx hardhat run --network matic scripts/upgradeERC20.js",
+    "deploy:wolf": "npx hardhat run --network rinkeby scripts/deploy-wolf.js",
+    "upgrade:wolf": "npx hardhat run --network rinkeby scripts/upgrade-wolf.js"
   },
   "pre-commit": [
     "lint"
@@ -33,12 +35,14 @@
     "@rarible/royalties": "^0.7.2",
     "@rarible/royalties-upgradeable": "^0.7.2",
     "@typescript-eslint/parser": "^4.28.5",
+    "aws-sdk": "^2.996.0",
     "axios": "^0.21.4",
     "bootstrap": "^5.0.2",
     "crypto-js": "^4.1.1",
+    "defender-relay-client": "^1.11.1",
     "dids": "^2.4.0",
     "dotenv": "^10.0.0",
-    "ethers": "^5.4.4",
+    "ethers": "^5.4.7",
     "fflate": "^0.7.1",
     "fs": "^0.0.1-security",
     "ipfs-car": "^0.5.5",
@@ -67,7 +71,7 @@
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.2",
-    "@nomiclabs/hardhat-etherscan": "^2.1.5",
+    "@nomiclabs/hardhat-etherscan": "^2.1.6",
     "@openzeppelin/hardhat-upgrades": "^1.9.0",
     "eslint": "7.30.0",
     "eslint-config-next": "11.0.1",

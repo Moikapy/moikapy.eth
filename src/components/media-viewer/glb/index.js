@@ -43,7 +43,7 @@ export const GLBComponent = ({
     };
   }, [width, height]);
   if (displayView) {
-    console.log('profile', displayView);
+    
     return (
       <div className={styles.container} ref={ref}>
         <model-viewer

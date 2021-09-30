@@ -1,11 +1,19 @@
+// const { DefenderRelayProvider } = require('defender-relay-client/lib/web3');
+const Web3 = require('web3');
 import { ethers } from 'ethers';
-import moifetch from 'moifetch';
+
 import { NFTStorage, File, Blob, FormData } from 'nft.storage';
-const api = process.env.LAZY_NFT_KEY;
-const nft_storage = new NFTStorage({ token: api });
+
+// const { DEFENDER_KEY, DEFENDER_PRIV, LAZY_NFT_KEY } = process.env;
+var abi = [
+  { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "account", "type": "address" }, { "indexed": true, "internalType": "address", "name": "operator", "type": "address" }, { "indexed": false, "internalType": "bool", "name": "approved", "type": "bool" }], "name": "ApprovalForAll", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "uint256", "name": "tokenId", "type": "uint256" }, { "indexed": true, "internalType": "address", "name": "creator", "type": "address" }], "name": "Mint", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "previousOwner", "type": "address" }, { "indexed": true, "internalType": "address", "name": "newOwner", "type": "address" }], "name": "OwnershipTransferred", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "operator", "type": "address" }, { "indexed": true, "internalType": "address", "name": "from", "type": "address" }, { "indexed": true, "internalType": "address", "name": "to", "type": "address" }, { "indexed": false, "internalType": "uint256[]", "name": "ids", "type": "uint256[]" }, { "indexed": false, "internalType": "uint256[]", "name": "values", "type": "uint256[]" }], "name": "TransferBatch", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "operator", "type": "address" }, { "indexed": true, "internalType": "address", "name": "from", "type": "address" }, { "indexed": true, "internalType": "address", "name": "to", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "id", "type": "uint256" }, { "indexed": false, "internalType": "uint256", "name": "value", "type": "uint256" }], "name": "TransferSingle", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "internalType": "string", "name": "value", "type": "string" }, { "indexed": true, "internalType": "uint256", "name": "id", "type": "uint256" }], "name": "URI", "type": "event" }, { "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "name": "_exists", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "_name", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "name": "_paused", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "_royaltiesPercentage", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "_symbol", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "account", "type": "address" }, { "internalType": "uint256", "name": "id", "type": "uint256" }], "name": "balanceOf", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address[]", "name": "accounts", "type": "address[]" }, { "internalType": "uint256[]", "name": "ids", "type": "uint256[]" }], "name": "balanceOfBatch", "outputs": [{ "internalType": "uint256[]", "name": "", "type": "uint256[]" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_tokenId", "type": "uint256" }], "name": "exists", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "getRoyaltiesPercentage", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "string", "name": "fullName", "type": "string" }, { "internalType": "string", "name": "symbl", "type": "string" }, { "internalType": "address", "name": "royaltiyReciever", "type": "address" }, { "internalType": "address", "name": "minter", "type": "address" }, { "internalType": "uint256", "name": "royaltiesPercentage", "type": "uint256" }, { "internalType": "bool", "name": "_publicMinting", "type": "bool" }, { "internalType": "string", "name": "metadata", "type": "string" }], "name": "initialize", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "account", "type": "address" }, { "internalType": "address", "name": "operator", "type": "address" }], "name": "isApprovedForAll", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_tokenId", "type": "uint256" }], "name": "isMintingPaused", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "string", "name": "_tokenURI", "type": "string" }, { "internalType": "uint256", "name": "amount", "type": "uint256" }, { "internalType": "bool", "name": "paused", "type": "bool" }], "name": "mint", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "name", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "owner", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "publicMinting", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_tokenId", "type": "uint256" }, { "internalType": "uint256", "name": "amount", "type": "uint256" }], "name": "reSupply", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "addy", "type": "address" }], "name": "removeWhiteList", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "addy", "type": "address" }], "name": "removeWhiteList_Admin", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "renounceOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "royaltiesReceiver", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_nftId", "type": "uint256" }, { "internalType": "uint256", "name": "_salePrice", "type": "uint256" }], "name": "royaltyInfo", "outputs": [{ "internalType": "address", "name": "receiver", "type": "address" }, { "internalType": "uint256", "name": "royaltyAmount", "type": "uint256" }, { "internalType": "uint256", "name": "tokenId", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "from", "type": "address" }, { "internalType": "address", "name": "to", "type": "address" }, { "internalType": "uint256[]", "name": "ids", "type": "uint256[]" }, { "internalType": "uint256[]", "name": "amounts", "type": "uint256[]" }, { "internalType": "bytes", "name": "data", "type": "bytes" }], "name": "safeBatchTransferFrom", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "from", "type": "address" }, { "internalType": "address", "name": "to", "type": "address" }, { "internalType": "uint256", "name": "id", "type": "uint256" }, { "internalType": "uint256", "name": "amount", "type": "uint256" }, { "internalType": "bytes", "name": "data", "type": "bytes" }], "name": "safeTransferFrom", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "operator", "type": "address" }, { "internalType": "bool", "name": "approved", "type": "bool" }], "name": "setApprovalForAll", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "string", "name": "_newName", "type": "string" }], "name": "setName", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "newRoyalties", "type": "uint256" }], "name": "setRoyalties", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "newRoyaltiesReceiver", "type": "address" }], "name": "setRoyaltiesReceiver", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "string", "name": "_newSymbol", "type": "string" }], "name": "setSymbol", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "addy", "type": "address" }], "name": "setWhiteList", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "addy", "type": "address" }], "name": "setWhiteList_Admin", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "bytes4", "name": "interfaceId", "type": "bytes4" }], "name": "supportsInterface", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "symbol", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_tokenId", "type": "uint256" }], "name": "toggleMintingPause", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "togglePublicMinting", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "name": "tokenUri", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "totalSupply", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "newOwner", "type": "address" }], "name": "transferOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_tokenId", "type": "uint256" }, { "internalType": "string", "name": "_uri", "type": "string" }], "name": "updateTokenUri", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "id", "type": "uint256" }], "name": "uri", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "", "type": "address" }], "name": "whiteListed", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }
+]
+
+const nft_storage = new NFTStorage({ token: process.env.LAZY_NFT_KEY });
 export default class Oxsis {
   constructor() {
     this.web3 = new ethers.providers.Web3Provider(window.ethereum);
+    this.web3JS = new Web3(window.ethereum);
   }
 
   // Foramt
@@ -163,7 +171,7 @@ export default class Oxsis {
     }
   };
 
-  mintNFT = async (address, tokenURI) => {
+  mintNFT = async (address, tokenURI, amount = 1, fixedSupply = true) => {
     // A Web3Provider wraps a standard Web3 provider, which is
     // what Metamask injects as window.ethereum into each page
     // const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -174,16 +182,18 @@ export default class Oxsis {
     if (this.web3 !== undefined) {
       const signer = await this.web3.getSigner();
       // console.log('signer', signer);
-      var abi = require('../../artifacts/contracts/ERC721.sol/ERC721_V1.json');
+      var abi = [
+        { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "account", "type": "address" }, { "indexed": true, "internalType": "address", "name": "operator", "type": "address" }, { "indexed": false, "internalType": "bool", "name": "approved", "type": "bool" }], "name": "ApprovalForAll", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "uint256", "name": "tokenId", "type": "uint256" }, { "indexed": true, "internalType": "address", "name": "creator", "type": "address" }], "name": "Mint", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "previousOwner", "type": "address" }, { "indexed": true, "internalType": "address", "name": "newOwner", "type": "address" }], "name": "OwnershipTransferred", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "operator", "type": "address" }, { "indexed": true, "internalType": "address", "name": "from", "type": "address" }, { "indexed": true, "internalType": "address", "name": "to", "type": "address" }, { "indexed": false, "internalType": "uint256[]", "name": "ids", "type": "uint256[]" }, { "indexed": false, "internalType": "uint256[]", "name": "values", "type": "uint256[]" }], "name": "TransferBatch", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "operator", "type": "address" }, { "indexed": true, "internalType": "address", "name": "from", "type": "address" }, { "indexed": true, "internalType": "address", "name": "to", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "id", "type": "uint256" }, { "indexed": false, "internalType": "uint256", "name": "value", "type": "uint256" }], "name": "TransferSingle", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "internalType": "string", "name": "value", "type": "string" }, { "indexed": true, "internalType": "uint256", "name": "id", "type": "uint256" }], "name": "URI", "type": "event" }, { "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "name": "_exists", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "_name", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "name": "_paused", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "_royaltiesPercentage", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "_symbol", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "account", "type": "address" }, { "internalType": "uint256", "name": "id", "type": "uint256" }], "name": "balanceOf", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address[]", "name": "accounts", "type": "address[]" }, { "internalType": "uint256[]", "name": "ids", "type": "uint256[]" }], "name": "balanceOfBatch", "outputs": [{ "internalType": "uint256[]", "name": "", "type": "uint256[]" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_tokenId", "type": "uint256" }], "name": "exists", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "getRoyaltiesPercentage", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "string", "name": "fullName", "type": "string" }, { "internalType": "string", "name": "symbl", "type": "string" }, { "internalType": "address", "name": "royaltiyReciever", "type": "address" }, { "internalType": "address", "name": "minter", "type": "address" }, { "internalType": "uint256", "name": "royaltiesPercentage", "type": "uint256" }, { "internalType": "bool", "name": "_publicMinting", "type": "bool" }, { "internalType": "string", "name": "metadata", "type": "string" }], "name": "initialize", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "account", "type": "address" }, { "internalType": "address", "name": "operator", "type": "address" }], "name": "isApprovedForAll", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_tokenId", "type": "uint256" }], "name": "isMintingPaused", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "string", "name": "_tokenURI", "type": "string" }, { "internalType": "uint256", "name": "amount", "type": "uint256" }, { "internalType": "bool", "name": "paused", "type": "bool" }], "name": "mint", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "name", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "owner", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "publicMinting", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_tokenId", "type": "uint256" }, { "internalType": "uint256", "name": "amount", "type": "uint256" }], "name": "reSupply", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "addy", "type": "address" }], "name": "removeWhiteList", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "addy", "type": "address" }], "name": "removeWhiteList_Admin", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "renounceOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "royaltiesReceiver", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_nftId", "type": "uint256" }, { "internalType": "uint256", "name": "_salePrice", "type": "uint256" }], "name": "royaltyInfo", "outputs": [{ "internalType": "address", "name": "receiver", "type": "address" }, { "internalType": "uint256", "name": "royaltyAmount", "type": "uint256" }, { "internalType": "uint256", "name": "tokenId", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "from", "type": "address" }, { "internalType": "address", "name": "to", "type": "address" }, { "internalType": "uint256[]", "name": "ids", "type": "uint256[]" }, { "internalType": "uint256[]", "name": "amounts", "type": "uint256[]" }, { "internalType": "bytes", "name": "data", "type": "bytes" }], "name": "safeBatchTransferFrom", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "from", "type": "address" }, { "internalType": "address", "name": "to", "type": "address" }, { "internalType": "uint256", "name": "id", "type": "uint256" }, { "internalType": "uint256", "name": "amount", "type": "uint256" }, { "internalType": "bytes", "name": "data", "type": "bytes" }], "name": "safeTransferFrom", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "operator", "type": "address" }, { "internalType": "bool", "name": "approved", "type": "bool" }], "name": "setApprovalForAll", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "string", "name": "_newName", "type": "string" }], "name": "setName", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "newRoyalties", "type": "uint256" }], "name": "setRoyalties", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "newRoyaltiesReceiver", "type": "address" }], "name": "setRoyaltiesReceiver", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "string", "name": "_newSymbol", "type": "string" }], "name": "setSymbol", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "addy", "type": "address" }], "name": "setWhiteList", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "addy", "type": "address" }], "name": "setWhiteList_Admin", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "bytes4", "name": "interfaceId", "type": "bytes4" }], "name": "supportsInterface", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "symbol", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_tokenId", "type": "uint256" }], "name": "toggleMintingPause", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "togglePublicMinting", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "name": "tokenUri", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "totalSupply", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "newOwner", "type": "address" }], "name": "transferOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_tokenId", "type": "uint256" }, { "internalType": "string", "name": "_uri", "type": "string" }], "name": "updateTokenUri", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "id", "type": "uint256" }], "name": "uri", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "", "type": "address" }], "name": "whiteListed", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" }
+      ];
+
       var contract = await new ethers.Contract(
         process.env.CONTRACT_ADDRESS,
-        abi.abi,
+        abi,
         this.web3
       );
       var contractSign = await contract.connect(signer);
-      var gas = await this.web3.getGasPrice();
       var data = await contractSign
-        .mintNFT(address, 'https://ipfs.io/ipfs/' + tokenURI)
+        .mint('https://ipfs.io/ipfs/' + tokenURI, amount, fixedSupply)
         .then((res) => {
           return res;
         })
@@ -198,24 +208,15 @@ export default class Oxsis {
   };
 
   getNFTCount = async () => {
-    // A Web3Provider wraps a standard Web3 provider, which is
-    // what Metamask injects as window.ethereum into each page
-    // const provider = new ethers.providers.Web3Provider(window.ethereum);
-
-    // The Metamask plugin also allows signing transactions to
-    // send ether and pay to change state within the blockchain.
-    // For this, you need the account signer...
-
     const signer = this.web3.getSigner();
-    var abi = require('../../artifacts/contracts/ERC721.sol/ERC721_V1.json');
     var contract = new ethers.Contract(
       process.env.CONTRACT_ADDRESS,
-      abi.abi,
+      abi,
       this.web3
     );
     var contractSign = await contract.connect(signer);
     return await contractSign
-      .getTotalItemsMinted()
+      .totalSupply()
       .then((res) => {
         console.log(res);
         return parseInt(Number(res._hex), 10);
@@ -224,97 +225,6 @@ export default class Oxsis {
         throw err;
       });
   };
-  getNFTURI = async (id) => {
-    // A Web3Provider wraps a standard Web3 provider, which is
-    // what Metamask injects as window.ethereum into each page
-    // const provider = new ethers.providers.Web3Provider(window.ethereum);
-
-    // The Metamask plugin also allows signing transactions to
-    // send ether and pay to change state within the blockchain.
-    // For this, you need the account signer...
-    if (this.web3 !== undefined) {
-      const signer = this.web3.getSigner();
-      var abi = require('../../artifacts/contracts/ERC721.sol/ERC721_V1.json');
-      var contract = new ethers.Contract(
-        process.env.CONTRACT_ADDRESS,
-        abi.abi,
-        this.web3
-      );
-      var contractSign = await contract.connect(signer);
-
-      return await contractSign.tokenURI('0x' + id);
-    } else {
-      return [];
-    }
-  };
-  updateNFTURI = async (id) => {
-    // A Web3Provider wraps a standard Web3 provider, which is
-    // what Metamask injects as window.ethereum into each page
-    // const provider = new ethers.providers.Web3Provider(window.ethereum);
-
-    // The Metamask plugin also allows signing transactions to
-    // send ether and pay to change state within the blockchain.
-    // For this, you need the account signer...
-    if (this.web3 !== undefined) {
-      const signer = this.web3.getSigner();
-      var abi = require('../../artifacts/contracts/ERC721.sol/ERC721_V1.json');
-      var contract = new ethers.Contract(
-        process.env.CONTRACT_ADDRESS,
-        abi.abi,
-        this.web3
-      );
-      var contractSign = await contract.connect(signer);
-
-      return await contractSign.tokenURI('0x' + id);
-    } else {
-      return [];
-    }
-  };
-
-  getTokenHolders = async () => {
-    // A Web3Provider wraps a standard Web3 provider, which is
-    // what Metamask injects as window.ethereum into each page
-    // const provider = new ethers.providers.Web3Provider(window.ethereum);
-
-    // The Metamask plugin also allows signing transactions to
-    // send ether and pay to change state within the blockchain.
-    // For this, you need the account signer...
-
-    const signer = this.web3.getSigner();
-    var abi = require('../../artifacts/contracts/ERC721.sol/ERC721_V1.json');
-    var contract = new ethers.Contract(
-      '0xfd01210d714A27Ec8e68311ED50882720C0E8698',
-      abi.abi,
-      this.web3
-    );
-    var contractSign = await contract.connect(signer);
-
-    return await contractSign.getTokenHolders();
-  };
-
-  grantMinterRole = async (role = 'MINTER_ROLE', addr) => {
-    // A Web3Provider wraps a standard Web3 provider, which is
-    // what Metamask injects as window.ethereum into each page
-    // const provider = new ethers.providers.Web3Provider(window.ethereum);
-
-    // The Metamask plugin also allows signing transactions to
-    // send ether and pay to change state within the blockchain.
-    // For this, you need the account signer...
-
-    const signer = this.web3.getSigner();
-    var abi = require('../../artifacts/contracts/ERC20.sol/LobbyToken.json');
-    var contract = new ethers.Contract(
-      '0xCb659699948024F0364B88b89175f1f4D26F75ea',
-      abi.abi,
-      this.web3
-    );
-    var contractSign = await contract.connect(signer);
-
-    return await contractSign.giveMinterRole(
-      '0xfd01210d714A27Ec8e68311ED50882720C0E8698'
-    );
-  };
-
   getRoyaltiesPercentage = async () => {
     // A Web3Provider wraps a standard Web3 provider, which is
     // what Metamask injects as window.ethereum into each page
@@ -325,11 +235,9 @@ export default class Oxsis {
     // For this, you need the account signer...
     if (this.web3 !== undefined) {
       const signer = this.web3.getSigner();
-
-      var abi = require('../../artifacts/contracts/ERC721.sol/ERC721_V1.json');
       var contract = new ethers.Contract(
         process.env.CONTRACT_ADDRESS,
-        abi.abi,
+        abi,
         this.web3
       );
       var contractSign = await contract.connect(signer);
@@ -340,30 +248,22 @@ export default class Oxsis {
     }
   };
   getCollection = async (ddr) => {
-    // A Web3Provider wraps a standard Web3 provider, which is
-    // what Metamask injects as window.ethereum into each page
-    // const provider = new ethers.providers.Web3Provider(window.ethereum);
-
-    // The Metamask plugin also allows signing transactions to
-    // send ether and pay to change state within the blockchain.
-    // For this, you need the account signer...
     if (this.web3 !== undefined) {
       const signer = this.web3.getSigner();
-      var abi = require('../../artifacts/contracts/ERC721.sol/ERC721_V1.json');
       var contract = new ethers.Contract(
         process.env.CONTRACT_ADDRESS,
-        abi.abi,
+        abi,
         this.web3
       );
       var contractSign = await contract.connect(signer);
       var arr = [];
       await contractSign
-        .getTotalItemsMinted()
+        .totalSupply()
         .then((res) => {
           for (var i = 0; i < parseInt(Number(res._hex), 10); i++) {
             var id = i + 1;
             const handleURI = async (id) =>
-              await contractSign.tokenURI('0x' + id);
+              await contractSign.uri('0x' + id);
             // console.log('handleURI', handleURI(id));
             arr.push({ tokenID: id, _uri: handleURI(id) });
           }
@@ -375,130 +275,6 @@ export default class Oxsis {
       return arr;
     } else {
       return [];
-    }
-  };
-  getNFTs = async (addr) => {
-    // A Web3Provider wraps a standard Web3 provider, which is
-    // what Metamask injects as window.ethereum into each page
-    // const provider = new ethers.providers.Web3Provider(window.ethereum);
-
-    // The Metamask plugin also allows signing transactions to
-    // send ether and pay to change state within the blockchain.
-    // For this, you need the account signer...
-    if (this.web3 !== undefined) {
-      const signer = this.web3.getSigner();
-      var abi = require('../../artifacts/contracts/ERC721.sol/ERC721_V1.json');
-      var contract = new ethers.Contract(
-        process.env.CONTRACT_ADDRESS,
-        abi.abi,
-        this.web3
-      );
-      var contractSign = await contract.connect(signer);
-      return await contractSign
-        .tokensOfOwner(addr)
-        .then(async (res) => {
-          return await res.map(async ({ _hex }) => {
-            const _id = parseInt(Number(_hex), 10);
-            const uri = await contractSign.tokenURI(parseInt(Number(_hex), 10));
-            return { tokenID: _id, _uri: uri };
-          });
-        })
-        .catch((err) => {
-          throw err;
-        });
-    } else {
-      return [];
-    }
-  };
-  getClaimStatus = async (id) => {
-    // A Web3Provider wraps a standard Web3 provider, which is
-    // what Metamask injects as window.ethereum into each page
-    // const provider = new ethers.providers.Web3Provider(window.ethereum);
-
-    // The Metamask plugin also allows signing transactions to
-    // send ether and pay to change state within the blockchain.
-    // For this, you need the account signer...
-
-    const signer = this.web3.getSigner();
-    var abi = require('../../artifacts/contracts/ERC721.sol/ERC721_V1.json');
-    var contract = new ethers.Contract(
-      process.env.CONTRACT_ADDRESS,
-      abi.abi,
-      this.web3
-    );
-    var contractSign = await contract.connect(signer);
-    return await contractSign.claimStatus(id);
-  };
-  static getGasFees = async (callback) => {
-    try {
-      let wsObj;
-      let wsUrl = 'wss://www.gasnow.org/ws';
-      let _data;
-      let updatePageGasPriceData = async (data) => {
-        const eth = await moifetch.GET(
-          'https://api.coingecko.com/api/v3/coins/ethereum'
-        );
-
-        if (data && data.gasPrices) {
-          let slow = Math.floor(
-            await oxsis.formatUnits(
-              await oxsis.parseUnits(data.gasPrices.slow.toString(), 'wei'),
-              'gwei'
-            )
-          );
-          let standard = Math.floor(
-            await oxsis.formatUnits(
-              await oxsis.parseUnits(data.gasPrices.standard.toString(), 'wei'),
-              'gwei'
-            )
-          );
-          let fast = Math.floor(
-            await oxsis.formatUnits(
-              await oxsis.parseUnits(data.gasPrices.fast.toString(), 'wei'),
-              'gwei'
-            )
-          );
-          let rapid = Math.floor(
-            await oxsis.formatUnits(
-              await oxsis.parseUnits(data.gasPrices.rapid.toString(), 'wei'),
-              'gwei'
-            )
-          );
-          const blockNumber = await this.getBlockNumber();
-          _data = {
-            lastBlock: blockNumber,
-            price: eth.data.market_data.current_price.usd,
-            show: true,
-            slow: slow,
-            standard: standard,
-            fast: fast,
-            rapid: rapid,
-          };
-          callback(_data);
-        }
-      };
-
-      wsObj = new WebSocket(wsUrl);
-
-      wsObj.onopen = (evt) => {
-        console.log('Connection open ...');
-      };
-
-      wsObj.onmessage = async (evt) => {
-        const dataStr = evt.data;
-        const data = JSON.parse(dataStr);
-
-        if (data.type) {
-          updatePageGasPriceData(data.data);
-        }
-      };
-
-      wsObj.onclose = (evt) => {
-        console.log('Connection closed.');
-      };
-      return _data;
-    } catch (error) {
-      throw error;
     }
   };
 }

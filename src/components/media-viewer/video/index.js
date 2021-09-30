@@ -49,60 +49,19 @@ export const VideoComponent = ({
     }
   }, [inView]);
 
-  if (displayView) {
-    return (
-      <div className={styles.video}>
-        <style jsx>
-          {`
-            .objkt-display video {
-              position: relative;
-              display: block;
-              margin: auto;
-              width: 100%;
-              height: auto;
-            }
-
-            @media screen and (min-width: 801px) {
-              .objkt-display video {
-                width: auto;
-                height: 60vh;
-              }
-            }
-
-            video {
-              width: 100%;
-            }
-          `}
-        </style>
-
-        <video
-          ref={domElement}
-          className={styles.displayviewVideo}
-          autoPlay={inView}
-          playsInline
-          muted
-          loop
-          controls={interactive}
-          src={preview ? previewUri : artifactUri}
-          poster={displayUri}
-        />
-      </div>
-    );
-  } else {
-    return (
-      <>
-        <video
-          ref={domElement}
-          className={styles.video}
-          autoPlay={inView}
-          playsInline
-          muted
-          loop
-          controls={interactive}
-          src={preview ? previewUri : artifactUri}
-          poster={displayUri}
-        />
-      </>
-    );
-  }
+  return (
+    <>
+      <video
+        ref={domElement}
+        className={styles.video}
+        autoPlay={inView}
+        playsInline
+        muted
+        loop
+        controls={interactive}
+        src={preview ? previewUri : artifactUri}
+        poster={displayUri}
+      />
+    </>
+  );
 };
