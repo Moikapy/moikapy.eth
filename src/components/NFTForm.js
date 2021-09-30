@@ -1,15 +1,14 @@
 
 import { useEffect, useState } from 'react';
-import Web3 from 'web3';
 import NFTInput from './NFTInput';
 import Button from './common/button';
 import { connect } from 'react-redux';
-import { _metadata, _metadataTypes } from 'lib/metadataSchema.ts';
-import { event } from 'utility/analytics';
+import { _metadata, _metadataTypes } from '../lib/metadataSchema.ts';
+import { event } from '../utility/analytics';
 import FormInputs from './FormInputs';
-import Oxsis from 'lib/oxsis';
+import Oxsis from '../lib/oxsis';
+import nft_storage from '../lib/nft-storage';
 import MediaViewer from './media-viewer';
-import detectEthereumProvider from '@metamask/detect-provider';
 import Input from './common/input';
 let web3, oxsis;
 
@@ -126,7 +125,7 @@ function NFTForm({ address }) {
                 placeholder={
                   'Fixed Supply'
                 }
-                onChange={(e) => {console.log(e.target.value=='on'?true:false);setSupply(e.target.value)}}
+                onChange={(e) => { console.log(e.target.value == 'on' ? true : false); setSupply(e.target.value) }}
                 className={`w-100 col-6`}
               />
               <hr />
@@ -184,7 +183,7 @@ function NFTForm({ address }) {
             )}
             <hr />
             <div className={`d-flex flex-column w-auto`}>
-              
+
 
               {state.animation_url !== undefined &&
                 state.animation_url.length > 0 && (
@@ -228,7 +227,7 @@ function NFTForm({ address }) {
                     seller_fee_basis_points: 500,
                   });
 
-                  const _tkn = await Oxsis.storeFileAsBlob(json);
+                  const _tkn = await nft_storage.storeFileAsBlob(json);
                   await oxsis.mintNFT(address, _tkn, supply);
 
 
