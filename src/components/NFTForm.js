@@ -7,7 +7,7 @@ import { _metadata, _metadataTypes } from '../lib/metadataSchema.ts';
 import { event } from '../utility/analytics';
 import FormInputs from './FormInputs';
 import Oxsis from '../lib/oxsis';
-import nft_storage from '../lib/nft-storage';
+import nft from '../lib/nft-storage';
 import MediaViewer from './media-viewer';
 import Input from './common/input';
 let web3, oxsis;
@@ -40,9 +40,6 @@ function NFTForm({ address }) {
     }
   };
   useEffect(() => {
-    Object.defineProperty(window, 'crypto', {
-
-    });
     oxsis = new Oxsis(window.ethereum);
   }, []);
   return (
@@ -227,7 +224,7 @@ function NFTForm({ address }) {
                     seller_fee_basis_points: 500,
                   });
 
-                  const _tkn = await nft_storage.storeFileAsBlob(json);
+                  const _tkn = await nft.storeFileAsBlob(json);
                   await oxsis.mintNFT(address, _tkn, supply);
 
 

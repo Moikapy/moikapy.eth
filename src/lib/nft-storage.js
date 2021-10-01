@@ -1,11 +1,11 @@
 import { NFTStorage, File, Blob, FormData } from 'nft.storage';
 const api = process.env.NFT_STORAGE_KEY;
 const nft_storage = new NFTStorage({ token: api });
-export class NFT_STORAGE {
+class NFT_STORAGE {
   /**********
    * NFT ACTIONS
    * **************/
-  static getCIDStatus = async (cid) => {
+   getCIDStatus = async (cid) => {
     try {
       const cidStatus =
         nft_storage !== undefined && (await nft_storage.status(cid));
@@ -15,7 +15,7 @@ export class NFT_STORAGE {
     }
   };
   // Deletes a CID
-  static deleteByCID = async (cid) => {
+   deleteByCID = async (cid) => {
     try {
       const cidStatus =
         nft_storage !== undefined && (await nft_storage.delete(cid));
@@ -25,7 +25,7 @@ export class NFT_STORAGE {
     }
   };
   // Check if CID is valid
-  static checkByCID = async (cid) => {
+   checkByCID = async (cid) => {
     try {
       const cidStatus =
         nft_storage !== undefined && (await nft_storage.check(cid));
@@ -35,7 +35,7 @@ export class NFT_STORAGE {
     }
   };
   //Stores File and Returns IPFS CID
-  static storeAsFile = async (file) => {
+   storeAsFile = async (file) => {
     try {
       const _file = new File([file], file[0].name, file[0].type);
       return _file;
@@ -44,7 +44,7 @@ export class NFT_STORAGE {
     }
   };
   //Stores File Blob and Returns IPFS CID
-  static storeFileAsBlob = async (file) => {
+   storeFileAsBlob = async (file) => {
     try {
       const cid =
         nft_storage !== undefined &&
@@ -58,7 +58,7 @@ export class NFT_STORAGE {
   };
 
   //Stores Multiple Files Into Directory and Returns IPFS CID
-  static storeMultiFile = async (files) => {
+   storeMultiFile = async (files) => {
     let _files = [];
     let i = 0;
     try {
@@ -76,3 +76,5 @@ export class NFT_STORAGE {
     }
   };
 }
+const nft = new NFT_STORAGE();
+export default nft;
