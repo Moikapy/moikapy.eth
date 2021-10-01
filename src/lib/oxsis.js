@@ -1038,7 +1038,7 @@ export default class Oxsis {
       }
     });
   };
- 
+
 
   mintNFT = async (address, tokenURI, amount = 1, fixedSupply = true) => {
     // A Web3Provider wraps a standard Web3 provider, which is
@@ -1056,7 +1056,7 @@ export default class Oxsis {
       ];
 
       var contract = await new ethers.Contract(
-        '0x3614e4165a4fa9aa813593882CaE8b66D05b97cf',
+        process.env.CONTRACT_ADDRESS,
         abi,
         this.web3
       );

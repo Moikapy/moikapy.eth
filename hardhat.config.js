@@ -28,7 +28,7 @@ module.exports = {
       url: 'https://polygon-mainnet.infura.io/v3/' + POLYGON_KEY,
       // url:'https://rpc-mainnet.matic.network',
       accounts: [`0x${PRIVATE_KEY}`],
-      gas: 2100000,
+      // gas: 2100000,
       gasPrice: 8000000000
     },
     rinkeby: {

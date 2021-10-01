@@ -10,7 +10,7 @@ contract Supply is Initializable, OwnableUpgradeable, Storage {
 
     /* Inits Contract */
     function __Supply_init() internal initializer {
-        __Ownable_init();
+         __Ownable_init();
     }
 
     function setSupplyFixedStatus(uint256 _tokenId, bool _addr) internal {

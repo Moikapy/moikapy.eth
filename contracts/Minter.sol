@@ -13,7 +13,6 @@ import "./Supply.sol";
 
 contract NFTCollection is
     Initializable,
-    OwnableUpgradeable,
     ContextMixin,
     ERC2771ContextUpgradeable,
     MOI_ERC1155,
@@ -35,7 +34,6 @@ contract NFTCollection is
         __Access_Control_init(_publicMinting, minter);
         __Royalties_init(address(royaltiyReciever), royaltiesPercentage);
         __Supply_init();
-        __Ownable_init();
     }
 
 
@@ -64,12 +62,12 @@ contract NFTCollection is
         return _tokenId;
     }
 
-    function reSupply(
+   function reSupply(
         address _airdropAddy,
         uint256 _tokenId,
         uint256 amount
     ) external returns (uint256) {
-        require(!isSupplyFixed(_tokenId), "TKN R/S");
+        require(!fixedSupplyStatus[_tokenId], "TKN R/S");
         require(_exists[_tokenId], "TKN N/A");
         require(tokenMinter[_tokenId] == msg.sender, "NMINTP");
         mint_internal(_airdropAddy, _tokenId, amount);
