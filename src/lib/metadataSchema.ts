@@ -22,7 +22,7 @@ var _metadata: IMetadata = {
   youtube_url: '',
   attributes: [],
   properties: [],
-  fee_recipient: process.env.WALLET_ADDRESS,
+  fee_recipient: '0x71D1272C2357bbb6a3C0E8aCE1AB84374a6426D9',
 };
 var _metadataTypes = {
   nameType: 'string',

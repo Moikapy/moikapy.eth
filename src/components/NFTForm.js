@@ -18,11 +18,7 @@ function NFTForm({ address }) {
     ..._metadata,
     type: '',
     attributes: [
-      {
-        trait_type: 'Developer Site:',
-        value: 'https://moikapy.dev',
-      },
-      { trait_type: 'Mint Date:', value: new Date().toUTCString() },
+      { trait_type: 'Mint_Date', value: new Date().toUTCString() },
     ],
     token: null,
     disable: true,
