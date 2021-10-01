@@ -3,9 +3,9 @@ const { ethers, upgrades } = require('hardhat');
 
 
 async function main() {
-  const ERC721 = await ethers.getContractFactory("ERC721_V1");
+  const NFTCollection = await ethers.getContractFactory("NFTCollection");
 
-  const mc = await upgrades.deployProxy(ERC721);
+  const mc = await upgrades.deployProxy(NFTCollection, ['SUND INC.', 'SUNTK', '0x71d1272c2357bbb6a3c0e8ace1ab84374a6426d9', '0x877728846bFB8332B03ac0769B87262146D777f3', 5, false, ""], { initializer: 'initialize' });
 
   await mc.deployed();
   console.log("MyCollectible deployed to:", mc.address);

@@ -15,7 +15,7 @@ module.exports = {
   },
   settings: {
     optimizer: {
-      enabled: false,
+      enabled: true,
       runs: 200
     }
   },
@@ -25,7 +25,6 @@ module.exports = {
       chainId: 137
     },
     matic: {
-      from: WALLET_ADDRESS,
       url: 'https://polygon-mainnet.infura.io/v3/' + POLYGON_KEY,
       // url:'https://rpc-mainnet.matic.network',
       accounts: [`0x${PRIVATE_KEY}`],

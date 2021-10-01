@@ -733,7 +733,7 @@ export default class Oxsis {
       ];
 
       var contract = await new ethers.Contract(
-        '0x5393E1C71c038Ae0e7DDd652443A4a9bde20090F',
+        '0x3614e4165a4fa9aa813593882CaE8b66D05b97cf',
         abi,
         this.web3
       );
