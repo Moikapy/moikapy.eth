@@ -175,6 +175,22 @@ function NFTForm({ address }) {
               />
             )}
             <hr />
+            <div className="d-flex flex-column justify-content-around">
+
+              name: {state.name},<br />
+              description: {state.description},<br />
+              image: {state.fileData},<br />
+              animation_url: {state.animation_url},<br />
+              background_color: {state.background_color},<br />
+              external_url: {state.external_url},<br />
+              youtube_url: {state.youtube_url},<br />
+              attributes: {state.attributes[0].trait_type},
+              {'File Type:'},<br />
+
+              properties: {state.properties},<br />
+
+            </div>
+            <hr />
             <div className={`d-flex flex-column w-auto`}>
 
 
@@ -212,9 +228,12 @@ function NFTForm({ address }) {
                     attributes: [
                       ...state.attributes,
                       {
-                        trait_type: 'File Type:',
+                        trait_type: 'File_Type',
                         value: state.type.toUpperCase(),
-                      },
+                      }, {
+                        trait_type: 'NFT_TYPE',
+                        value: 'ART', // ADD LAND, ENTITIES, WEARABLES, and EQUIPMENT
+                      }
                     ],
                     properties: state.properties,
                     seller_fee_basis_points: 500,
