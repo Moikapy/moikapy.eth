@@ -5,6 +5,8 @@ require('dotenv').config();
 require("@nomiclabs/hardhat-ethers");
 require('@openzeppelin/hardhat-upgrades');
 require("@nomiclabs/hardhat-etherscan");
+require('hardhat-contract-sizer');
+
 const { API_URL, PRIVATE_KEY, POLYGON_KEY, WALLET_ADDRESS, ETHERSCAN_API } = process.env;
 module.exports = {
   solidity: "0.8.0",

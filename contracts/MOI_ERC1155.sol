@@ -72,8 +72,7 @@ contract MOI_ERC1155 is
 
     function updateTokenUri(uint256 _tokenId, string calldata _uri) external {
         require(_exists[_tokenId], "TKN N/A");
-        require(whiteListed[msg.sender], "WLF");
-        require(!blackListed[msg.sender], "BANNED");
+        require(whiteListed[msg.sender], "WL");
         require(tokenMinter[_tokenId] == msg.sender, "NMINTP");
 
         setTokenUri(_tokenId, _uri);

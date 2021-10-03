@@ -32,11 +32,4 @@ contract Supply is Initializable, OwnableUpgradeable, Storage {
         setSupplyFixedStatus(_tokenId, !isSupplyFixed(_tokenId));
     }
 
-    function toggleSupplyFixedStatus_Admin(uint256 _tokenId)
-        external
-        onlyOwner
-    {
-        require(_exists[_tokenId], "TKN N/A");
-        setSupplyFixedStatus(_tokenId, !isSupplyFixed(_tokenId));
-    }
 }

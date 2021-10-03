@@ -10,13 +10,6 @@ contract Access_Control is Initializable, OwnableUpgradeable, Storage {
     internal
     initializer
   {
-    __Access_Control_init_unchained(_publicMinting, minter);
-  }
-
-  function __Access_Control_init_unchained(bool _publicMinting, address minter)
-    internal
-    initializer
-  {
     setPublicMinting(_publicMinting);
     setWhiteList_internal(minter, true);
     __Ownable_init();
@@ -48,20 +41,12 @@ contract Access_Control is Initializable, OwnableUpgradeable, Storage {
     setWhiteList_internal(_addr, false);
   }
 
-  function removeWhiteList_Admin(address _addr) external onlyOwner {
-    setWhiteList_internal(_addr, false);
-  }
-
-  function revokeTokenMintingPriv(uint256 _tokenId) external {
-    require(tokenMinter[_tokenId] == msg.sender, 'NMINTP');
-    setTokenMinter(_tokenId, address(0));
-  }
-
   function setBlackList_internal(address _addr, bool _b) internal {
     blackListed[_addr] = _b;
   }
 
   function addBlackList(address _addr) external onlyOwner {
+    setWhiteList_internal(_addr, false);
     setBlackList_internal(_addr, true);
   }
 

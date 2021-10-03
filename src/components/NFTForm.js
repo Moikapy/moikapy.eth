@@ -218,6 +218,7 @@ function NFTForm({ address }) {
                   await setState({ ...state, isLoading: true });
                   const json = JSON.stringify({
                     ..._metadata,
+                    minted_by: address,
                     name: state.name,
                     description: state.description,
                     image: state.fileData,
@@ -240,7 +241,7 @@ function NFTForm({ address }) {
                   });
 
                   const _tkn = await nft.storeFileAsBlob(json);
-                  await oxsis.mintNFT(address, _tkn, supply);
+                  await oxsis.mintNFT(address, _tkn, supply, 'ART');
 
 
                   event({

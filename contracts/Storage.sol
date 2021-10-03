@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
 contract Storage is Initializable {
-    function __Storage_initialize() public initializer {}
+    function __Storage_initialize() internal initializer {}
 
     // Token name
     string public _name;
@@ -26,8 +26,4 @@ contract Storage is Initializable {
     mapping(address => bool) public whiteListed;
     mapping(address => bool) public blackListed;
     mapping(uint256 => address) public tokenMinter;
-
-    function setTokenMinter(uint256 _tokenId, address addy) internal {
-        tokenMinter[_tokenId] = addy;
-    }
 }
