@@ -32,7 +32,7 @@ function Layout({ children, layoutContainerStyle = '', startCore }) {
       {/* NAVBAR */}
       <Navbar
         navbarContainerStyle={'sticky-top border-top border-bottom border-dark'}
-        brandText={process.env.BRAND_NAME || 'MOIKAPY.DEV'}
+        brandText={process.env.BRAND_NAME || 'MOIAVERSE.SPACE'}
         brandTextStyle={`text-uppercase`}
         onClick={() => setShow(true)}
         onClickCreate={() => router.push('/mint')}
@@ -42,12 +42,19 @@ function Layout({ children, layoutContainerStyle = '', startCore }) {
         <main className={`p-2 w-100 h-100 ${layoutContainerStyle}`}>
           {children}
 
-          <div className="text-center w-100 p-3 mx-auto">
-            Contract Address:{' '}
-            <a
-              href={`https://polygonscan.com/address/${process.env.CONTRACT_ADDRESS}`}
-            >
+          <div className='text-center w-100 p-3 mx-auto'>
+            Contract Addresses:{' '}<br />
+            NIDUS TOKEN: <a
+              href={`https://polygonscan.com/address/${'0xC3eF62F7F4EB2b9340FBc72e501A41b53CdEbE56'}`}>
+              {'0xC3eF62F7F4EB2b9340FBc72e501A41b53CdEbE56'}
+            </a><br />
+            MOIAVERSE: <a
+              href={`https://polygonscan.com/address/${process.env.CONTRACT_ADDRESS}`}>
               {process.env.CONTRACT_ADDRESS}
+            </a><br />
+            ART_FACTORY: <a
+              href={`https://polygonscan.com/address/${'0xFAd7F020dCef9BE47d4d6e408c4f19EF01039B5e'}`}>
+              {'0xFAd7F020dCef9BE47d4d6e408c4f19EF01039B5e'}
             </a>
           </div>
           <hr className={`container`} />
@@ -55,7 +62,7 @@ function Layout({ children, layoutContainerStyle = '', startCore }) {
       </div>
       {/* LOGIN MODAL */}
       {show && <LoginModal handleShow={() => setShow(!show)} />}
-      <a href="#" id="open_preferences_center" className={'d-none'}>
+      <a href='#' id='open_preferences_center' className={'d-none'}>
         Open Preferences Center
       </a>
     </div>

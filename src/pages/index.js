@@ -198,7 +198,7 @@ function _index({ address, chainId }) {
               )
             )
           ) : (
-            <p>Refresh</p>
+            <p>Previews Coming Soon</p>
           )}
         </div>
       </div>

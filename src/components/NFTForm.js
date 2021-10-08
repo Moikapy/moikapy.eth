@@ -83,7 +83,7 @@ function NFTForm({ address }) {
             className={`col-xl-6 m-3 p-2 border border-dark d-inline-flex flex-column`}
           >
             <h4>NFT INFO</h4>
-            Closed To The Public
+            This is The Art Factory NFT minting form for the MOIAVERSE
             <hr />
             {Object.keys(_metadata).map((data, key) => (
               <FormInputs
@@ -110,20 +110,6 @@ function NFTForm({ address }) {
               />
               <hr />
             </>
-            <>
-              <Input
-                id={11}
-                label={'Fixed Supply'}
-                type={'checkbox'}
-                placeholder={
-                  'Fixed Supply'
-                }
-                onChange={(e) => { console.log(e.target.value == 'on' ? true : false); setSupply(e.target.value) }}
-                className={`w-100 col-6`}
-              />
-              <hr />
-
-            </>
           </div>
 
           <div
@@ -148,6 +134,8 @@ function NFTForm({ address }) {
                 });
               }}
             />
+            <br/>
+            NFT COVER FOR VIDEO/AUDIO (NON IMAGE NFT)
             <br />
             {state.showInput && (
               <NFTInput

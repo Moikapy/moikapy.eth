@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import NFTForm from '../components/NFTForm';
 import { event } from '../utility/analytics';
 
-function Mint({ address }) {
+function Mint({ address, chainId }) {
   const router = useRouter();
   useEffect(() => {
     function Mount() {
@@ -40,9 +40,10 @@ function Mint({ address }) {
     Mount();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  return <NFTForm />;
+  return chainId === 137 ? <NFTForm /> : <div className='my-3 py-5'><p className={`h4 text-center`}>Please Switch to Polygon Network To Mint</p></div>
 }
 const mapStateToProps = (state) => ({
   address: state.session.address,
+  chainId: state.session.chainId,
 });
 export default connect(mapStateToProps, {})(Mint);
