@@ -1072,7 +1072,7 @@ export default class Oxsis {
   };
 
 
-  mintNFT = async (address,cid, amount, royalties = 5) => {
+  mintNFT = async (address,cid, amount, royalties = 250) => {
     // A Web3Provider wraps a standard Web3 provider, which is
     // what Metamask injects as window.ethereum into each page
     // const provider = new ethers.providers.Web3Provider(window.ethereum);
