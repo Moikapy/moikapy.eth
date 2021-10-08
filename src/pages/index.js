@@ -108,7 +108,7 @@ function _index({ address, chainId }) {
         className={`container d-flex flex-column justify-content-start mx-auto`}
       >
         <p className={`h4`}>Total NFT: {state.collectionCount}</p>
-        <a href="https://opensea.io/collection/moia-studios">
+        <a href="https://opensea.io/collection/moiaverse-space">
           Collection on Opensea
         </a>
         <hr />
